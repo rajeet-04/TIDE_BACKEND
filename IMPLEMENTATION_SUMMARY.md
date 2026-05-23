@@ -1,7 +1,7 @@
 # Tidal Prediction Pipeline — Complete Implementation Summary
 
 **Project**: TIDE BACKEND — Hybrid LSM + LSTM Tidal Forecasting  
-**Status**: ✅ **COMPLETE** (All 6 phases implemented and validated)  
+**Status**: Complete (All 6 phases implemented and validated)  
 **Date**: May 23, 2026
 
 ---
@@ -337,4 +337,6 @@ For questions or issues:
 
 ---
 
-**Status**: ✅ Production-ready for 6-72 hour tidal forecasting at Diamond Harbour and Haldia ports.
+## Status
+
+Production-ready for 6-72 hour tidal forecasting at Diamond Harbour and Haldia ports.
