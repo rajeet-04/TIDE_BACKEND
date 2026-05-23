@@ -1,59 +1,35 @@
-# Tide Backend — LSM-based Tidal Prediction
+# Tide Backend — Hybrid LSM + LSTM Tidal Prediction
 
-Predicts future tides at Diamond Harbour and Haldia (Hooghly Estuary, India)
-using the Least Squares Method described in
-*Rusdin et al. (2024), "Analysis and Prediction of Tidal Measurement Data from
-Temporary Stations using the Least Squares Method"*, Civil Engineering Journal.
+Predicts tides at Diamond Harbour and Haldia (Hooghly Estuary, India) using a
+two-stage hybrid model:
 
-Source data is hourly observed tidal heights from Survey of India PDFs
-(2000-2023 for Diamond Harbour, 2000-2024 for Haldia).
+1. **Least Squares Method (LSM)** — deterministic harmonic model from
+   *Rusdin et al. (2024), "Analysis and Prediction of Tidal Measurement Data
+   from Temporary Stations using the Least Squares Method"* (Civil Engineering
+   Journal). Captures astronomical tides via 19 constituents.
 
-## Pipeline
+2. **LSTM residual model** — recurrent neural network trained on
+   `(observed − LSM_prediction)` to learn non-astronomical patterns: storm
+   surge, monsoon discharge, atmospheric pressure variation.
 
-```
-PDFs                        data/                 output/
-─────                       ─────                 ───────
-DIAMOND HARBOUR/*.pdf  ──►  diamond_harbour.csv  ──►  harmonic_constants_*.csv
-HALDIA/*.pdf           ──►  haldia.csv           ──►  validation_*.csv
-                                                      forecast_30days_*.csv
-                                                      summary.json
-                                                      plots/*.png
-```
+Source data: hourly tidal heights from Survey of India PDFs (2000-2023 for
+Diamond Harbour, 2000-2024 for Haldia).
 
-## How to run
+## Results
 
-Install dependencies (one time):
-```
-pip install pypdf pdfplumber numpy pandas matplotlib scikit-learn
-```
+Test set is the most recent 10% of the observed series (chronological split,
+no leakage). Metrics computed against held-out observations.
 
-Phase 1 — Extract hourly heights from PDFs:
-```
-python src/extract_pdfs.py
-```
+| Port            | Method      | Test RMSE | Test R | Δ vs LSM |
+|-----------------|-------------|----------:|-------:|---------:|
+| Haldia          | LSM only    |  0.268 m  | 0.9795 |        — |
+| Haldia          | LSM + LSTM  |  0.073 m  | 0.9985 |   −72.9% |
+| Diamond Harbour | LSM only    |  0.359 m  | 0.9679 |        — |
+| Diamond Harbour | LSM + LSTM  |  0.117 m  | 0.9966 |   −67.3% |
 
-Phase 2-5 — Fit LSM (90% train / 10% validate), compute datums, save constants:
-```
-python src/train_predict.py
-```
-
-Plots:
-```
-python src/plot_results.py
-```
-
-Forecast any future window from saved harmonic constants:
-```
-python src/forecast.py --port haldia --start 2026-01-01 --days 30 \
-    --out output/jan_2026_haldia.csv
-```
-
-## Results (90/10 chronological split, hourly data)
-
-| Port            | Train size | Valid size | Train RMSE | Valid RMSE | Valid R |
-|-----------------|-----------:|-----------:|-----------:|-----------:|--------:|
-| Diamond Harbour |    140,248 |     15,584 |     0.31 m |     0.37 m |   0.967 |
-| Haldia          |    196,581 |     21,843 |     0.27 m |     0.27 m |   0.979 |
+For reference, the paper reports 0.05-0.06 m RMSE on Palu Bay (Indonesia,
+deep open bay). Our LSM+LSTM at 0.07 m on the Hooghly estuary — which has
+much larger non-astronomical variability — is in the same range.
 
 19-year predicted tidal datums (m, relative to mean sea level):
 
@@ -68,59 +44,153 @@ python src/forecast.py --port haldia --start 2026-01-01 --days 30 \
 | LAT   |           +0.14 |  +0.06 |
 | RA    |            6.85 |   6.58 |
 
+## Pipeline
+
+```
+PDFs                        data/                 output/
+─────                       ─────                 ───────
+DIAMOND HARBOUR/*.pdf  ──►  diamond_harbour.csv  ──►  harmonic_constants_*.csv
+HALDIA/*.pdf           ──►  haldia.csv           ──►  validation_*.csv
+                                                      lstm_models/*.pt
+                                                      lstm_test_*.csv
+                                                      summary.json
+                                                      lstm_summary.json
+                                                      plots/*.png
+```
+
+## How to run
+
+Install dependencies (one time, uses uv):
+```
+uv sync
+```
+
+This installs torch with CUDA 12.8 support (Blackwell sm_120 — RTX 50 series),
+which auto-falls-back to CPU on systems without a compatible GPU.
+
+Phase 1 — Extract hourly heights from PDFs:
+```
+uv run python src/extract_pdfs.py
+```
+
+Phase 2-5 — Fit LSM (90/10 chronological split), compute datums:
+```
+uv run python src/train_predict.py
+```
+
+Phase 6 — Train LSTM on residuals (uses GPU automatically):
+```
+uv run python src/residual_lstm.py
+```
+
+Plots:
+```
+uv run python src/plot_results.py    # LSM diagnostic plots
+uv run python src/plot_lstm.py       # LSM vs LSM+LSTM comparison
+```
+
+Forecast any future window using LSM only (fast, deterministic, far-future capable):
+```
+uv run python src/forecast.py --port haldia --start 2026-01-01 --days 30 \
+    --out output/jan_2026_haldia.csv
+```
+
+Combined LSM+LSTM forecast for the next few days, or hindcast over a historical
+range:
+```
+# Hindcast (using observed history as LSTM context — most accurate)
+uv run python src/forecast_combined.py --port haldia \
+    --start 2024-12-01 --days 7 --mode hindcast --out output/hindcast.csv
+
+# Forecast (autoregressive into the future — useful for ~24-72 hour horizons)
+uv run python src/forecast_combined.py --port haldia \
+    --start 2025-01-01 --hours 72 --mode forecast --out output/forecast.csv
+```
+
 ## Method
 
-The harmonic model (paper eq. 1):
+### LSM (paper eqs. 1-22)
+
+The harmonic model
 
     h(t) = h_o + Σ H_i cos(ω_i t − g_i)
 
-is rewritten as a linear fit (paper eq. 3):
+is rewritten as a linear fit in `A_i = H_i cos(g_i)`, `B_i = H_i sin(g_i)`:
 
     h(t) = h_o + Σ A_i cos(ω_i t) + Σ B_i sin(ω_i t)
 
-where `A_i = H_i cos(g_i)`, `B_i = H_i sin(g_i)`. With observations at times
-`t_m`, this becomes an over-determined linear system solved by least squares.
-Amplitudes and phases are recovered as `H_i = √(A_i² + B_i²)` and
-`g_i = arctan2(B_i, A_i)`.
+With observations at times `t_m`, this is an over-determined linear system
+solved by `numpy.linalg.lstsq`. Amplitudes and phases are recovered as
+`H_i = √(A_i² + B_i²)` and `g_i = arctan2(B_i, A_i)`.
 
-We fit 19 constituents: 11 from the paper (M2, S2, N2, K2, K1, O1, P1, Q1,
-Mf, Msf, Mm) plus shallow-water (M4, MS4, MN4, M6, S4, 2N2) and seasonal
-(Sa, Ssa) terms — important in the Hooghly estuary because of nonlinear
-shallow-water effects, monsoon discharge, and storm surge contributions.
+We fit 19 constituents:
+- Paper's 11: M2, S2, N2, K2, K1, O1, P1, Q1, Mf, Msf, Mm
+- Shallow-water: M4, MS4, MN4, M6, S4, 2N2 (estuarine nonlinearity)
+- Seasonal: Sa, Ssa (annual / semi-annual cycles)
+
+### LSTM residual model
+
+After LSM is fitted, residuals = `observed − LSM_predicted` are computed for
+the entire series. These are fed to a 2-layer LSTM (hidden=96) with a 168-hour
+(1 week) lookback window. Per-timestep features:
+
+```
+[ residual_t,
+  hour_sin, hour_cos,           # hour of day
+  day_sin,  day_cos,            # day of year
+  month_sin, month_cos ]        # month
+```
+
+Training: chronological 80/10/10 train/val/test split, Adam optimizer,
+gradient clipping, early stopping on validation MSE. Residuals are
+standardized using train-segment statistics.
+
+At inference time, the LSTM is run autoregressively in forecast mode
+(its own predicted residuals feed back in), or with real residuals as
+context in hindcast mode.
 
 ## File layout
 
 ```
 TIDE BACKEND/
-├── TIDAL_DATA/                # source PDFs (input)
+├── TIDAL_DATA/                 # source PDFs (input)
 │   ├── DIAMOND HARBOUR/*.pdf
 │   └── HALDIA/*.pdf
-├── data/                      # extracted hourly CSVs (Phase 1 output)
-├── output/                    # models, predictions, plots
+├── data/                       # extracted hourly CSVs (Phase 1 output)
+├── output/                     # models, predictions, plots
 │   ├── harmonic_constants_*.csv
 │   ├── validation_*.csv
-│   ├── forecast_30days_*.csv
+│   ├── lstm_test_*.csv
+│   ├── lstm_models/*.pt
 │   ├── summary.json
+│   ├── lstm_summary.json
 │   └── plots/
 └── src/
-    ├── extract_pdfs.py        # Phase 1: PDF -> CSV
-    ├── constituents.py        # tidal constituent definitions
-    ├── lsm.py                 # Least Squares Method solver
-    ├── evaluate.py            # bias / RMSE / R / SR metrics
-    ├── datums.py              # HAT / MHWS / MHW / MSL / MLW / MLWS / LAT
-    ├── train_predict.py       # full pipeline driver
-    ├── plot_results.py        # diagnostic plots
-    └── forecast.py            # CLI for arbitrary future predictions
+    ├── extract_pdfs.py         # Phase 1: PDF -> CSV
+    ├── constituents.py         # tidal constituent definitions
+    ├── lsm.py                  # LSM solver
+    ├── evaluate.py             # bias / RMSE / R / SR metrics
+    ├── datums.py               # HAT / MHWS / MHW / MSL / MLW / MLWS / LAT
+    ├── train_predict.py        # LSM pipeline driver (Phase 2-5)
+    ├── plot_results.py         # LSM diagnostic plots
+    ├── residual_lstm.py        # Phase 6: LSTM training
+    ├── plot_lstm.py            # LSM vs LSM+LSTM comparison plots
+    ├── forecast.py             # LSM-only CLI (deterministic, far future)
+    └── forecast_combined.py    # LSM+LSTM CLI (hindcast or short-term forecast)
 ```
 
 ## Notes & caveats
 
-- Times are in IST as published by Survey of India. The paper used UTC.
-- Diamond Harbour is sparse for 2021-2023 (incomplete source PDFs); fit still
-  works since LSM tolerates gaps.
-- The astronomical model captures only the tidal signal. Storm surges, monsoon
-  river discharge, and atmospheric pressure variations show up as residuals
-  (~0.3 m RMSE). For higher accuracy, train an ML model on residuals (Phase 6,
-  not implemented yet).
-- All harmonic constants and the mean level are saved as CSV/JSON, so future
-  forecasts don't need to refit.
+- Times are in IST (Survey of India publication standard).
+- Diamond Harbour 2021-2023 source PDFs are sparse; both LSM and LSTM are
+  trained on whatever is available. LSM tolerates gaps natively, LSTM is
+  trained over the union of dense intervals.
+- LSM-only forecasts are valid for arbitrary future horizons (years, the full
+  19-year nodal cycle). LSTM contributions decay quickly when run
+  autoregressively beyond ~24-72 hours, since we don't have future weather
+  data; for far-future predictions, use `forecast.py` (LSM only).
+- For real-time operational use, the LSTM should be re-fed with fresh
+  observations and re-evaluated frequently. Data assimilation would be a
+  natural next step.
+- All harmonic constants and LSTM weights are persisted, so forecasts don't
+  need re-training.
