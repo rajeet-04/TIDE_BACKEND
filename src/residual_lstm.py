@@ -288,7 +288,18 @@ def main() -> None:
         summaries.append(train_port(slug, device))
 
     out = OUTPUT_DIR / "lstm_summary.json"
-    out.write_text(json.dumps(summaries, indent=2))
+    # Merge with any existing summary so single-port runs accumulate
+    existing = []
+    if out.exists():
+        try:
+            existing = json.loads(out.read_text())
+        except Exception:
+            existing = []
+    by_port = {r["port"]: r for r in existing}
+    for r in summaries:
+        by_port[r["port"]] = r
+    merged = sorted(by_port.values(), key=lambda r: r["port"])
+    out.write_text(json.dumps(merged, indent=2))
     print(f"\nSummary -> {out}")
 
 
