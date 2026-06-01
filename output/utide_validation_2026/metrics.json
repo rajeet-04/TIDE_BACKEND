@@ -1,0 +1,36 @@
+{
+  "haldia": {
+    "observed_events": 352,
+    "matched_events": 352,
+    "match_rate_percent": 100.0,
+    "time_mae_minutes": 14.982239591808712,
+    "time_rmse_minutes": 16.709973409061195,
+    "time_accuracy_percent": 97.44318181818181,
+    "height_mae_m": 0.12972928302610287,
+    "height_rmse_m": 0.14444260531379102,
+    "height_accuracy_percent": 99.7159090909091,
+    "joint_accuracy_percent": 97.1590909090909,
+    "time_gate_minutes": 30,
+    "height_gate_m": 0.3,
+    "passes_time_accuracy_gate": true,
+    "passes_height_accuracy_gate": true,
+    "passes_joint_accuracy_gate": true
+  },
+  "diamond_harbour": {
+    "observed_events": 352,
+    "matched_events": 352,
+    "match_rate_percent": 100.0,
+    "time_mae_minutes": 10.514967926467802,
+    "time_rmse_minutes": 13.132956238527909,
+    "time_accuracy_percent": 98.01136363636364,
+    "height_mae_m": 0.10588301708841721,
+    "height_rmse_m": 0.12193112243189257,
+    "height_accuracy_percent": 100.0,
+    "joint_accuracy_percent": 98.01136363636364,
+    "time_gate_minutes": 30,
+    "height_gate_m": 0.3,
+    "passes_time_accuracy_gate": true,
+    "passes_height_accuracy_gate": true,
+    "passes_joint_accuracy_gate": true
+  }
+}
