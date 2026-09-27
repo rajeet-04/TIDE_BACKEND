@@ -1,19 +1,38 @@
 [project]
 name = "tide-backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "Tide prediction for Haldia and Diamond Harbour (Hooghly estuary)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "joblib>=1.6.0",
     "matplotlib>=3.10.9",
     "numpy>=2.4.6",
     "pandas>=3.0.3",
     "pdfplumber>=0.11.9",
     "pypdf>=6.13.3",
     "scikit-learn>=1.8.0",
+    "scipy>=1.18.1",
     "torch>=2.10.0",
     "utide>=0.3.1",
 ]
+
+[project.scripts]
+tide = "tide.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=9.1.1"]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.12"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "tide"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["slow: fits models on the full gauge record"]
 
 # Pull torch from the official CUDA 12.8 wheel index so we get the
 # Blackwell-compatible (sm_120) build for the RTX 50-series.
