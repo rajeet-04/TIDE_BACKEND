@@ -1,7 +1,7 @@
 # Tide Model Design: Haldia and Diamond Harbour
 
 **Date:** 2026-09-27
-**Status:** Draft for review
+**Status:** Approved 2026-09-27; refined while planning 1a
 **Supporting material:** `bmad-output/brainstorming-report.md`, `bmad-output/decision-log.md`
 
 ## 1. Goal
@@ -83,11 +83,18 @@ Readings are flagged, never deleted. Flagged readings are left out of fitting an
 
 **Rules:**
 
-1. **Physically impossible values:** zero or negative readings, and values outside the port's plausible range. The range is set from robust quantiles of clean years.
-2. **Spikes:** the residual against a robust harmonic fit exceeds 5 robust standard deviations of its 7-day neighbourhood. The fit is **cross-fitted**: it excludes the year being checked, so "truth" in a test year is never defined by a model that saw that year.
-3. **Impossible rate of change:** the hour-to-hour change exceeds 1.2 × the 99.99th percentile of clean-year changes.
+1. **Physically impossible values:** zero or negative readings, and values more than 1 m outside the port's 0.01–99.99% quantile range.
+2. **Spikes:** take the residual against a robust harmonic fit and subtract its 7-hour centred median, so slow surges are not treated as spikes. A reading is flagged when this exceeds both 5 robust standard deviations of its 7-day neighbourhood and 0.5 m. The fit is **cross-fitted**: it excludes the year being checked, so "truth" in a test year is never defined by a model that saw that year.
+3. **Impossible rate of change:** the hour-to-hour change exceeds 1.2 × the 99.99th percentile of clean-year changes. Of the two readings, the one further from the harmonic prediction is flagged.
 4. **Flat stretches:** 4 or more identical consecutive readings while the harmonic prediction changes by more than 0.3 m.
 5. **Year-level problems:** found by the audit in 3.4.
+
+**Review file:** each port has `data/qc/<port>_review.csv` for manual decisions, and each row records its evidence:
+
+- `exclude` stretches: rule 5 decisions from the audit.
+- `keep` stretches: genuine extremes that a rule flagged, such as cyclone surges.
+
+Planning checks on the gauge record found that rule 2 flags the steepest real surge onsets, such as Amphan on 2020-05-20. The `keep` rows exist for these.
 
 **Outputs:**
 
@@ -107,6 +114,8 @@ Fit a basic harmonic model to each calendar year separately. Track:
 - M2, S2, K1, O1 and M4 amplitude and phase
 
 A year that departs from its neighbours by more than 3 robust standard deviations is reported as a suspected re-levelling, clock error or channel change. Correction or exclusion needs evidence and is recorded in the decision log. The same audit runs whenever new gauge data arrives.
+
+The Diamond Harbour 2022 gauge PDFs are headed "DIAMOND HARBOUR (ROY CHAK)", which may mean a different gauge site. The audit therefore compares 2021–2023 with 2011–2016 before those years are used as the final test.
 
 ### 3.5 Diamond Harbour gap filling
 
@@ -211,7 +220,7 @@ Peaks are found on the final 1-minute curve:
 - separation ≥ 4 h
 - quadratic refinement, as today
 
-**Long low-water stands:** the event time is the centre of the interval within 1 cm of the extreme. This definition is documented in outputs.
+**Long low-water stands:** on the 1-minute curve, a low water's time is the centre of the interval within 1 cm of the minimum. A high water's time is its maximum. This definition is documented in outputs.
 
 ### 4.7 Error ranges
 
@@ -386,12 +395,20 @@ A `NOTICE` file covers:
 
 The work is too large for one plan, so it is split into three plans run in order:
 
-1. **Core** (sections 3, 4.1–4.3, 4.5–4.7, 5, 6, 8):
-   - data store, QC, audit, datum registry, Diamond Harbour gap filling, official-table archiver
-   - backtest harness, with the current pipeline and tables as baselines
-   - model A variants, then B and its challengers
-   - error ranges
-   - predict, train and backtest commands; outputs, windows, datums, moon and sun
+1. **Core** (sections 3, 4.1–4.3, 4.5–4.7, 5, 6, 8), in two parts:
+   - **1a:**
+     - data store, QC, audit, datum registry
+     - backtest harness, with the current pipeline and tables as baselines
+     - model A variants, selected and scored
+     - `predict` and `backtest` commands serving model A in the current file formats
+   - **1b:**
+     - B and its challengers, ensembles and error ranges
+     - Diamond Harbour gap filling and the official-table archiver
+     - `train` with the promotion rule
+     - windows, datums, moon and sun
+     - regression snapshots
+
+   1b is planned after 1a runs, so its design can use 1a's backtest results.
 2. **Short range** (section 4.4): ERA5 and GloFAS ingestion, layer S, archived-forecast validation, fallback.
 3. **Operations** (section 7): registry and promotion, schedules on the VM, monitoring, NOTICE file.
 
@@ -410,8 +427,8 @@ The work is too large for one plan, so it is split into three plans run in order
 
 ## 11. Dependencies on the user
 
-1. Accept the ERA5 CC BY licence and the GloFAS CEMS-FLOODS licence on their dataset pages. Needed before plan 2.
+1. ~~Accept the ERA5 CC BY licence and the GloFAS CEMS-FLOODS licence on their dataset pages.~~ Done 2026-09-27; both show as accepted on both Copernicus stores.
 2. Send formal data requests:
    - **Survey of India:** Haldia 2025–26, Diamond Harbour 2017–26, Sagar and Garden Reach history, and gauge datums
    - **INCOIS:** archives, datums, and whether Haldia records exist
-3. Merge PR #5 so the INCOIS archiver runs, and make the repository private.
+3. ~~Merge PR #5 so the INCOIS archiver runs, and make the repository private.~~ Done.
