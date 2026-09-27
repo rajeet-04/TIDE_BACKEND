@@ -194,3 +194,20 @@ TIDE BACKEND/
   natural next step.
 - All harmonic constants and LSTM weights are persisted, so forecasts don't
   need re-training.
+
+## Tide model core (`tide` command)
+
+The new model lives in `src/tide/` and runs with `uv run tide <command> --help`.
+
+| Command | What it does |
+| --- | --- |
+| `tide qc --port haldia` | Flags suspect gauge readings; writes `data/qc/` and `output/qc/`. |
+| `tide audit --port haldia` | Fits each year separately and reports years that depart from their neighbours; writes `output/audit/`. |
+| `tide tables-api --port haldia --year 2024` | Stores the official table events for a year (benchmark only). |
+| `tide backtest --port haldia --candidate current_pipeline` | Scores one candidate on the rolling yearly folds. |
+| `tide select --port haldia` | Chooses model A settings on the selection years and scores the final years; writes `output/backtest/<port>/report.md`. |
+| `tide fit --port haldia --promote` | Fits the selected model on all QC-passed readings and saves a version under `models/`. |
+| `tide predict --port haldia --start 2026-10-01 --hours 48` | Writes `hourly_water_levels.csv`, `predicted_tide_events.csv`, `tide_frequency.csv` and the chart. |
+
+Times without a zone are read as IST. Heights are above chart datum (Survey of India).
+The design is in `docs/superpowers/specs/2026-09-27-tide-model-design.md`.
