@@ -174,3 +174,23 @@ def promotion(base: pd.DataFrame, cand: pd.DataFrame) -> dict:
     return {"passed": all(checks.values()), "checks": checks, "joint": joint, "time_mae": time_mae,
             "height_mae": height_mae, "season_diff_pp": seasons, "joint_by_horizon": by_horizon,
             "publishable_horizons": publishable, "coverage_check": "pending: error ranges arrive in plan 1b"}
+
+def score_fixed(port_slug: str, predicted: pd.DataFrame) -> pd.DataFrame:
+    """Event rows for predictions made outside the backtest (the official tables), scored on
+    every IST year they share with the QC-passed gauge, within the span they cover."""
+    if predicted.empty:
+        return pd.DataFrame()
+    gauge = load_gauge(port_slug, passed_only=True)
+    rows = []
+    for year in sorted(set(ist_years(predicted["time_utc"])) & set(ist_years(gauge["time_utc"]))):
+        start, end = ist_year_start(year), ist_year_start(year + 1)
+        inside = predicted[(predicted["time_utc"] >= start) & (predicted["time_utc"] < end)].reset_index(drop=True)
+        observed = gauge[(gauge["time_utc"] >= start) & (gauge["time_utc"] < end)]
+        truth = find_events(observed["time_utc"], observed["height_m"], step_minutes=60)
+        truth = truth[truth["time_utc"].between(inside["time_utc"].min(), inside["time_utc"].max())]
+        matches = match_events(truth, inside)
+        extras = extra_events(inside, matches, coverage(observed["time_utc"]))
+        tag = {"origin": -1, "test_year": year, "horizon": 0, "final": year > SELECTION_LAST_YEAR}
+        rows += [matches.assign(kind="observed", time_utc=matches["observed_time_utc"], **tag),
+                 extras.assign(kind="extra", hit=False, **tag)]
+    return pd.concat(rows, ignore_index=True) if rows else pd.DataFrame()
