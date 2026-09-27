@@ -27,6 +27,11 @@ def build_parser() -> argparse.ArgumentParser:
     api.add_argument("--year", type=int, required=True)
     api.add_argument("--from-json", type=Path, help="a saved API response (list of rows) instead of a live request")
     api.set_defaults(handler=_tables_api)
+
+    choose = _port(commands.add_parser("select", help="choose model A settings on the selection folds, then score the final folds"))
+    choose.add_argument("--jobs", type=int, default=4)
+    choose.add_argument("--skip-grid", action="store_true", help="reuse models/<port>/selected.json")
+    choose.set_defaults(handler=_select)
     return parser
 
 def main(argv: list[str] | None = None) -> None:
@@ -86,3 +91,16 @@ def _tables_api(args: argparse.Namespace) -> None:
               else fetch_api(args.port, start, end))
     merged = save_tables(args.port, events)
     print(f"{len(events)} events in {args.year}; {len(merged)} stored in data/tables/{args.port}.csv")
+
+def _select(args: argparse.Namespace) -> None:
+    import json
+
+    from tide.harmonic import HarmonicConfig
+    from tide.report import final_report, select, selected_path
+
+    config = (HarmonicConfig.from_name(json.loads(selected_path(args.port).read_text())["candidate"])
+              if args.skip_grid else select(args.port, args.jobs))
+    result = final_report(args.port, config, args.jobs)
+    print(json.dumps({"candidate": config.name, **result["promotion"]["checks"],
+                      "passed": result["promotion"]["passed"]}, indent=2))
+    print(f"report: output/backtest/{args.port}/report.md")
