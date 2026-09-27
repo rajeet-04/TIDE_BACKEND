@@ -1,0 +1,2 @@
+test_year,observed,matched,missed,extra,joint_pct,time_mae_min,time_p95_min,time_bias_min,height_mae_m,height_p95_m,height_bias_m,hourly_rmse_m
+2024,1413,1413,0,0,79.33474876150035,16.580417577954705,33.47692307999999,15.900050292297712,0.16062654394691,0.3995846153846153,-0.11858560988668322,

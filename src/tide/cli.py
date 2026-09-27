@@ -15,6 +15,18 @@ def build_parser() -> argparse.ArgumentParser:
     commands = parser.add_subparsers(dest="command", required=True, metavar="command")
     _port(commands.add_parser("qc", help="flag suspect gauge readings; write data/qc and output/qc")).set_defaults(handler=_qc)
     _port(commands.add_parser("audit", help="fit each year separately; report years that depart from their neighbours")).set_defaults(handler=_audit)
+
+    back = _port(commands.add_parser("backtest", help="score one candidate on the rolling yearly folds"))
+    back.add_argument("--candidate", required=True,
+                      help="current_pipeline, utide_only, official_tables or a model A name such as A-w8-auto-side-trend")
+    back.add_argument("--set", dest="fold_set", choices=["selection", "final", "all"], default="all")
+    back.add_argument("--jobs", type=int, default=4)
+    back.set_defaults(handler=_backtest)
+
+    api = _port(commands.add_parser("tables-api", help="store one year of official table events from the prediction API"))
+    api.add_argument("--year", type=int, required=True)
+    api.add_argument("--from-json", type=Path, help="a saved API response (list of rows) instead of a live request")
+    api.set_defaults(handler=_tables_api)
     return parser
 
 def main(argv: list[str] | None = None) -> None:
@@ -37,3 +49,40 @@ def _audit(args: argparse.Namespace) -> None:
     write_audit(args.port, table)
     shown = ["year", "hours", "sparse", "mean_level_m", "M2_amp_m", "M2_phase_deg", "M4_amp_m", "suspect"]
     print(table[shown].round(3).to_string(index=False))
+
+def _backtest(args: argparse.Namespace) -> None:
+    import pandas as pd
+
+    from tide.backtest import folds, run, score_fixed, summary
+    from tide.candidates import candidate
+    from tide.ports import OUTPUT_DIR, ist_years
+    from tide.store import load_gauge
+    from tide.tables import load_tables
+
+    if args.candidate == "official_tables":
+        events, hours, by = score_fixed(args.port, load_tables(args.port)), pd.DataFrame(), ("test_year",)
+    else:
+        years = set(ist_years(load_gauge(args.port, passed_only=True)["time_utc"]))
+        chosen = [f for f in folds(args.port, years) if args.fold_set == "all" or f.final == (args.fold_set == "final")]
+        events, hours = run(args.port, candidate(args.candidate), chosen, n_jobs=args.jobs)
+        by = ("final", "test_year", "horizon")
+    if events.empty:
+        print("nothing to score: no overlap with QC-passed gauge years")
+        return
+    table = summary(events, hours, by=by)
+    out = OUTPUT_DIR / "backtest" / args.port
+    out.mkdir(parents=True, exist_ok=True)
+    table.to_csv(out / f"{args.candidate}.csv", index=False)
+    print(table.round(3).to_string(index=False))
+
+def _tables_api(args: argparse.Namespace) -> None:
+    import json
+
+    from tide.ports import ist_year_start
+    from tide.tables import fetch_api, parse_api_rows, save_tables
+
+    start, end = ist_year_start(args.year), ist_year_start(args.year + 1)
+    events = (parse_api_rows(json.loads(args.from_json.read_text()), start, end) if args.from_json
+              else fetch_api(args.port, start, end))
+    merged = save_tables(args.port, events)
+    print(f"{len(events)} events in {args.year}; {len(merged)} stored in data/tables/{args.port}.csv")
