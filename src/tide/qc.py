@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import numpy as np
 import pandas as pd
+from scipy.ndimage import maximum_filter
+from scipy.signal import find_peaks
 
 from tide.harmonic import HarmonicConfig, HarmonicModel
 from tide.ports import DATA_DIR, IST, OUTPUT_DIR, ist_years, port, to_utc
@@ -39,6 +41,31 @@ def cross_fitted_prediction(times: pd.DatetimeIndex, heights: np.ndarray, lat: f
         prediction[this] = model.predict(times[this])
     return prediction
 
+def _tidal_phase(prediction: np.ndarray, times: pd.DatetimeIndex, grid: pd.DatetimeIndex) -> np.ndarray:
+    """Phase class of each hour on the grid: whole hours since the predicted low water (0-13)
+    times 10, plus the spring/neap tercile of the predicted 25-hour range (0-2)."""
+    p = pd.Series(prediction, index=times).reindex(grid).interpolate(limit_area="inside")
+    values = p.to_numpy()
+    lows, _ = find_peaks(-np.nan_to_num(values, nan=float(np.nanmean(values))), distance=4)
+    hours = np.arange(len(values))
+    if len(lows) == 0:
+        return np.zeros(len(values), dtype=int)
+    last = lows[np.clip(np.searchsorted(lows, hours, side="right") - 1, 0, None)]
+    since = np.clip(hours - last, 0, 13)
+    window = p.rolling(25, center=True, min_periods=12)
+    tercile = pd.qcut(window.max() - window.min(), 3, labels=False).fillna(1).to_numpy(dtype=int)
+    return since * 10 + tercile
+
+def _phase_spread(centred: np.ndarray, phase: np.ndarray) -> np.ndarray:
+    """Spread of the centred residual by phase class: the 90th percentile of its size over 1.645
+    (the SD for Gaussian noise; it grows when 10% or more of a phase departs, as at a bore),
+    taken as the largest over neighbouring classes (±1 hour, ±1 tercile) since events drift between them."""
+    q90 = pd.Series(np.abs(centred)).groupby(phase).quantile(0.9) / 1.645
+    table = np.full((14, 3), np.nan)
+    table[q90.index // 10, q90.index % 10] = q90.to_numpy()
+    table = maximum_filter(np.nan_to_num(table, nan=0.0), size=3, mode="nearest")
+    return table[phase // 10, phase % 10]
+
 def run_qc(gauge: pd.DataFrame, port_slug: str, review: pd.DataFrame | None = None) -> pd.DataFrame:
     """The gauge table plus qc_flag ('' when passed, else '|'-joined rule names) and qc_residual_m."""
     table = gauge.sort_values("time_utc").reset_index(drop=True)
@@ -52,13 +79,16 @@ def run_qc(gauge: pd.DataFrame, port_slug: str, review: pd.DataFrame | None = No
     high = np.quantile(positive, 1 - 1e-4) + RANGE_MARGIN_M
     flags["range"] = (h <= 0) | (h < low) | (h > high)
 
-    # 2. spikes: residual minus its 7-hour median, against the spread of its 7-day neighbourhood
+    # 2. spikes: residual minus its 7-hour median, against the larger of the spread of its 7-day
+    #    neighbourhood and the spread at the same tidal phase (the spring flood onset is steep)
     prediction = cross_fitted_prediction(times, h, port(port_slug).lat, ~flags["range"])
     residual = h - prediction
     grid = pd.Series(np.where(flags["range"], np.nan, residual), index=times).asfreq("1h")
     local = grid - grid.rolling(7, center=True, min_periods=4).median()
     centred = local - local.rolling(169, center=True, min_periods=48).median()
-    spread = 1.4826 * centred.abs().rolling(169, center=True, min_periods=48).median()
+    week = 1.4826 * centred.abs().rolling(169, center=True, min_periods=48).median()
+    phase = pd.Series(_phase_spread(centred.to_numpy(), _tidal_phase(prediction, times, local.index)), index=local.index)
+    spread = np.maximum(week, phase)
     spike = (local.abs() > SPIKE_SD * spread) & (local.abs() > SPIKE_MIN_M)
     flags["spike"] = spike.reindex(times, fill_value=False).to_numpy(dtype=bool)
 

@@ -58,3 +58,19 @@ def test_report_and_review_list_summarise_flags():
     assert stretches["hours"].tolist() == [2, 1]
     assert stretches["rules"].tolist() == ["flat|range", "spike"]
     assert stretches["context_residual_m"].tolist() == [0.5, 0.5]
+
+def test_spring_flood_onset_is_not_a_spike():
+    """A bore-like jump at every spring flood onset, which the harmonic fit smooths away, is real water."""
+    from scipy.signal import find_peaks
+    gauge = synthetic_gauge()
+    h = gauge["height_m"].to_numpy().copy()
+    daily_range = pd.Series(h).rolling(25, center=True, min_periods=12).agg(lambda x: x.max() - x.min()).to_numpy()
+    lows, _ = find_peaks(-h, distance=8)
+    onsets = lows[(daily_range[lows] > np.nanquantile(daily_range, 2 / 3)) & (lows + 1 < len(h))] + 1
+    h[onsets] += 0.8
+    h[10_000] += 1.5
+    gauge["height_m"] = h
+    table = run_qc(gauge, "haldia", review=NO_REVIEW)
+    assert len(onsets) > 500
+    assert len(flagged_with(table, "spike") & set(onsets)) / len(onsets) < 0.01
+    assert 10_000 in flagged_with(table, "spike")

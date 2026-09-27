@@ -84,7 +84,7 @@ Readings are flagged, never deleted. Flagged readings are left out of fitting an
 **Rules:**
 
 1. **Physically impossible values:** zero or negative readings, and values more than 1 m outside the port's 0.01–99.99% quantile range.
-2. **Spikes:** take the residual against a robust harmonic fit and subtract its 7-hour centred median, so slow surges are not treated as spikes. A reading is flagged when this exceeds both 5 robust standard deviations of its 7-day neighbourhood and 0.5 m. The fit is **cross-fitted**: it excludes the year being checked, so "truth" in a test year is never defined by a model that saw that year.
+2. **Spikes:** take the residual against a robust harmonic fit and subtract its 7-hour centred median, so slow surges are not treated as spikes. A reading is flagged when this exceeds both 0.5 m and 5 times the larger of two spreads: the robust standard deviation of its 7-day neighbourhood, and the spread at the same tidal phase (whole hours since the predicted low water × spring/neap tercile of the predicted 25-hour range; 90th percentile of the size ÷ 1.645, the largest over neighbouring phase classes). The phase spread keeps the spring-tide bore, which the harmonic fit smooths, from being flagged (decision log 2026-09-27). The fit is **cross-fitted**: it excludes the year being checked, so "truth" in a test year is never defined by a model that saw that year.
 3. **Impossible rate of change:** the hour-to-hour change exceeds 1.2 × the 99.99th percentile of clean-year changes. Of the two readings, the one further from the harmonic prediction is flagged.
 4. **Flat stretches:** 4 or more identical consecutive readings while the harmonic prediction changes by more than 0.3 m.
 5. **Year-level problems:** found by the audit in 3.4.
