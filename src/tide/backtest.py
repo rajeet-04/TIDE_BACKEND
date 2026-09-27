@@ -128,3 +128,49 @@ def summary(events: pd.DataFrame, hours: pd.DataFrame, by=("horizon", "season", 
 def joint_pct(events: pd.DataFrame) -> float:
     observed = events[events["kind"] == "observed"]
     return 100.0 * observed["hit"].sum() / len(observed) if len(observed) else float("nan")
+
+SEASONS = ("dry", "pre_monsoon", "monsoon", "post_monsoon")
+MATCH_KEYS = ["origin", "test_year", "horizon", "state", "observed_time_utc"]
+
+def bootstrap_diff(base: pd.DataFrame, cand: pd.DataFrame, metric: str, n: int = 1000, seed: int = 0) -> dict:
+    """Candidate minus base on the observed events both scored, with a 95% interval from
+    resampling calendar months (spec 5.4). joint: percentage points; *_mae: minutes or metres."""
+    both = (base[base["kind"] == "observed"].set_index(MATCH_KEYS)
+            .join(cand[cand["kind"] == "observed"].set_index(MATCH_KEYS), how="inner", lsuffix="_base", rsuffix="_cand"))
+    if metric == "joint":
+        value, scale = both["hit_cand"].astype(float) - both["hit_base"].astype(float), 100.0
+    else:
+        column = {"time_mae": "time_error_minutes", "height_mae": "height_error_m"}[metric]
+        both = both.dropna(subset=[f"{column}_base", f"{column}_cand"])
+        value, scale = both[f"{column}_cand"].abs() - both[f"{column}_base"].abs(), 1.0
+    if both.empty:
+        return {"diff": float("nan"), "lo": float("nan"), "hi": float("nan")}
+    months = pd.DatetimeIndex(both.index.get_level_values("observed_time_utc")).tz_convert(IST).strftime("%Y-%m")
+    sums = pd.DataFrame({"value": value.to_numpy(dtype=float), "count": 1.0}).groupby(np.asarray(months)).sum()
+    draws = np.random.default_rng(seed).integers(0, len(sums), size=(n, len(sums)))
+    stats = scale * sums["value"].to_numpy()[draws].sum(axis=1) / sums["count"].to_numpy()[draws].sum(axis=1)
+    return {"diff": float(scale * sums["value"].sum() / sums["count"].sum()),
+            "lo": float(np.percentile(stats, 2.5)), "hi": float(np.percentile(stats, 97.5))}
+
+def promotion(base: pd.DataFrame, cand: pd.DataFrame) -> dict:
+    """Spec 5.7 checks 1-3 on the final folds, and the horizons that may be published
+    (criterion 5). Range coverage (check 4) arrives with the error ranges in plan 1b."""
+    b, c = base[base["final"].astype(bool)], cand[cand["final"].astype(bool)]
+    joint = bootstrap_diff(b, c, "joint")
+    time_mae = bootstrap_diff(b, c, "time_mae")
+    height_mae = bootstrap_diff(b, c, "height_mae")
+    seasons = {}
+    for season in SEASONS:
+        in_b, in_c = b[season_of(b["time_utc"]) == season], c[season_of(c["time_utc"]) == season]
+        if (in_b["kind"] == "observed").any() and (in_c["kind"] == "observed").any():
+            seasons[season] = joint_pct(in_c) - joint_pct(in_b)
+    by_horizon = {int(h): joint_pct(part) for h, part in c.groupby("horizon")}
+    first = by_horizon.get(1)
+    publishable = [h for h, score in by_horizon.items() if first is not None and score >= first - 2.0]
+    checks = {"joint_better": bool(joint["lo"] > 0),
+              "time_mae_not_worse": bool(time_mae["lo"] <= 0),
+              "height_mae_not_worse": bool(height_mae["lo"] <= 0),
+              "no_season_worse_than_1pp": all(v >= -1.0 for v in seasons.values())}
+    return {"passed": all(checks.values()), "checks": checks, "joint": joint, "time_mae": time_mae,
+            "height_mae": height_mae, "season_diff_pp": seasons, "joint_by_horizon": by_horizon,
+            "publishable_horizons": publishable, "coverage_check": "pending: error ranges arrive in plan 1b"}
