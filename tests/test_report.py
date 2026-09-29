@@ -5,6 +5,7 @@ import pandas as pd
 from tide import report
 from tide.harmonic import HarmonicConfig
 from tide.ports import IST, ist_year_start
+from tide.stack import StackConfig
 
 def test_grid_covers_every_setting_once():
     names = [c.name for c in report.GRID]
@@ -32,11 +33,14 @@ def test_final_report_writes_markdown_and_json(tmp_path, monkeypatch):
         {"time_utc": pd.date_range(ist_year_start(2018), ist_year_start(2022), freq="30D")}))
     monkeypatch.setattr(report, "run", lambda port_slug, cand, fold_list, n_jobs=1: results[cand.name])
     monkeypatch.setattr(report, "load_tables", lambda port_slug: pd.DataFrame())
-    result = report.final_report("haldia", HarmonicConfig(window_years=8), n_jobs=1)
+    result = report.final_report("haldia", StackConfig(HarmonicConfig(window_years=8)), n_jobs=1)
     assert result["candidate"] == "A-w8-auto-noside-trend" and result["promotion"]["checks"]["joint_better"]
     text = (tmp_path / "backtest" / "haldia" / "report.md").read_text(encoding="utf-8")
     assert "Promotion checks against the current pipeline" in text and "joint_better: PASS" in text
-    assert json.loads((tmp_path / "backtest" / "haldia" / "report.json").read_text())["pooled"]
+    assert "Error-range coverage on the final set" in text
+    saved = json.loads((tmp_path / "backtest" / "haldia" / "report.json").read_text())
+    assert saved["pooled"] and saved["coverage"] and saved["coverage_by_season"]
+    assert len(saved["ranges_production"]) == 5 * 3 * 4
 
 def test_diamond_harbour_report_carries_the_phase_caveat(tmp_path, monkeypatch):
     results = {"A-w8-auto-noside-trend": fake_results(0.8), "current_pipeline": fake_results(0.9),
@@ -46,6 +50,6 @@ def test_diamond_harbour_report_carries_the_phase_caveat(tmp_path, monkeypatch):
         {"time_utc": pd.date_range(ist_year_start(2018), ist_year_start(2022), freq="30D")}))
     monkeypatch.setattr(report, "run", lambda port_slug, cand, fold_list, n_jobs=1: results[cand.name])
     monkeypatch.setattr(report, "load_tables", lambda port_slug: pd.DataFrame())
-    report.final_report("diamond_harbour", HarmonicConfig(window_years=8), n_jobs=1)
+    report.final_report("diamond_harbour", StackConfig(HarmonicConfig(window_years=8)), n_jobs=1)
     text = (tmp_path / "backtest" / "diamond_harbour" / "report.md").read_text(encoding="utf-8")
     assert "Caveat" in text and "10 min later" in text

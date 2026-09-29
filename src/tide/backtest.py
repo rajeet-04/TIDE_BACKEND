@@ -162,9 +162,17 @@ def bootstrap_diff(base: pd.DataFrame, cand: pd.DataFrame, metric: str, n: int =
     return {"diff": float(scale * sums["value"].sum() / sums["count"].sum()),
             "lo": float(np.percentile(stats, 2.5)), "hi": float(np.percentile(stats, 97.5))}
 
-def promotion(base: pd.DataFrame, cand: pd.DataFrame) -> dict:
-    """Spec 5.7 checks 1-3 on the final folds, and the horizons that may be published
-    (criterion 5). Range coverage (check 4) arrives with the error ranges in plan 1b."""
+COVERAGE_BAND = (88.0, 92.0)
+
+def promotion(base: pd.DataFrame, cand: pd.DataFrame, coverage: pd.DataFrame | None = None,
+              tables: pd.DataFrame | None = None) -> dict:
+    """Spec 5.7 on the final folds, against the base (the current pipeline):
+    1. joint share better, with the 95% interval of the difference above zero
+    2. timing and height MAE not worse beyond their intervals
+    3. no season worse by more than 1 point
+    4. 90% range coverage within 88-92% for every output (ranges.coverage rows; fails without them)
+    Also spec 1.2: beat the official tables (score_fixed rows) in every year they overlap, and
+    publish only horizons within 2 points of one year ahead whose coverage is also in the band."""
     b, c = base[base["final"].astype(bool)], cand[cand["final"].astype(bool)]
     joint = bootstrap_diff(b, c, "joint")
     time_mae = bootstrap_diff(b, c, "time_mae")
@@ -176,15 +184,29 @@ def promotion(base: pd.DataFrame, cand: pd.DataFrame) -> dict:
             seasons[season] = joint_pct(in_c) - joint_pct(in_b)
     by_horizon = {int(h): joint_pct(part) for h, part in c.groupby("horizon")}
     first = by_horizon.get(1)
-    publishable = [h for h, score in by_horizon.items() if first is not None and score >= first - 2.0]
+    publishable = [h for h, score in by_horizon.items()
+                   if first is not None and score >= first - 2.0 and _covered(coverage, h)]
+    versus_tables = {}
+    for year, official in (tables.groupby("test_year") if tables is not None and len(tables) else []):
+        mine = cand[(cand["test_year"] == year) & (cand["horizon"] == 1)]
+        if (mine["kind"] == "observed").any():
+            versus_tables[int(year)] = joint_pct(mine) - joint_pct(official)
     checks = {"joint_better": bool(joint["lo"] > 0),
               "time_mae_not_worse": bool(time_mae["lo"] <= 0),
               "height_mae_not_worse": bool(height_mae["lo"] <= 0),
-              "no_season_worse_than_1pp": all(v >= -1.0 for v in seasons.values())}
+              "no_season_worse_than_1pp": all(v >= -1.0 for v in seasons.values()),
+              "coverage_88_92": _covered(coverage, "all"),
+              "beats_tables": all(v > 0 for v in versus_tables.values())}
     return {"passed": all(checks.values()), "checks": checks, "joint": joint, "time_mae": time_mae,
             "height_mae": height_mae, "season_diff_pp": seasons, "joint_by_horizon": by_horizon,
-            "publishable_horizons": publishable, "coverage_check": "pending: error ranges arrive in plan 1b"}
+            "publishable_horizons": publishable, "versus_tables_pp": versus_tables}
 
+def _covered(coverage: pd.DataFrame | None, horizon) -> bool:
+    """Whether every output's coverage at this horizon ('all' pools the horizons) lies in the band."""
+    if coverage is None:
+        return False
+    part = coverage[coverage["horizon"] == horizon]
+    return len(part) > 0 and bool(part["covered_pct"].between(*COVERAGE_BAND).all())
 def score_fixed(port_slug: str, predicted: pd.DataFrame) -> pd.DataFrame:
     """Event rows for predictions made outside the backtest (the official tables), scored on
     every IST year they share with the QC-passed gauge, within the span they cover."""

@@ -1,4 +1,4 @@
-"""Model A selection on the selection folds and the final-set report (spec 5.2, 5.5, 5.7)."""
+"""Model A selection on the selection folds and the final-set report (spec 4.7, 5.2, 5.5, 5.7)."""
 from __future__ import annotations
 
 import itertools
@@ -11,6 +11,8 @@ from tide.backtest import SELECTION_LAST_YEAR, folds, promotion, run, score_fixe
 from tide.candidates import CurrentPipeline, HarmonicCandidate, UTideOnly
 from tide.harmonic import HarmonicConfig
 from tide.ports import OUTPUT_DIR, ROOT, ist_years
+from tide.ranges import calibrate, coverage
+from tide.stack import StackCandidate, StackConfig
 from tide.store import load_gauge
 from tide.tables import load_tables
 
@@ -49,32 +51,46 @@ def select(port_slug: str, n_jobs: int = 4) -> HarmonicConfig:
                                 "selected_on": date.today().isoformat()}, indent=2) + "\n")
     return best
 
-def final_report(port_slug: str, config: HarmonicConfig, n_jobs: int = 4) -> dict:
-    """Score the selected model and both baselines on the final folds, compare with the official
-    tables where they overlap, run the promotion checks and write report.md and report.json."""
-    final = [f for f in folds(port_slug, _years(port_slug)) if f.final]
-    results = {c.name: run(port_slug, c, final, n_jobs=n_jobs)
-               for c in (HarmonicCandidate(config), CurrentPipeline(), UTideOnly())}
+def final_report(port_slug: str, config: StackConfig, n_jobs: int = 4) -> dict:
+    """Score the selected model, model A alone and both baselines on the final folds. Calibrate
+    the selected model's 90% ranges on its selection folds and check their coverage on the final
+    folds; compare with the official tables; run the promotion checks; write report.md and
+    report.json. report.json also keeps the ranges recalibrated on all folds, which a saved
+    version serves (spec 4.7)."""
+    chosen = StackCandidate(config)
+    every = folds(port_slug, _years(port_slug))
+    final, selection = [f for f in every if f.final], [f for f in every if not f.final]
+    rivals = [chosen, CurrentPipeline(), UTideOnly()] + ([HarmonicCandidate(config.a)] if config.level or config.event else [])
+    results = {c.name: run(port_slug, c, final, n_jobs=n_jobs) for c in rivals}
+    calibration = run(port_slug, chosen, selection, n_jobs=n_jobs)
+    ranges = calibrate(*calibration)
+    covered = coverage(*results[chosen.name], ranges)
+    covered_seasons = coverage(*results[chosen.name], ranges, by="season")
+    production = calibrate(*(pd.concat([a, b], ignore_index=True) for a, b in zip(calibration, results[chosen.name])))
+    official = score_fixed(port_slug, load_tables(port_slug))
 
     def table(by) -> pd.DataFrame:
         return pd.concat([summary(ev, hr, by=by).assign(candidate=name) for name, (ev, hr) in results.items()],
                          ignore_index=True)
 
     pooled, by_horizon, by_season = table(()), table(("horizon",)), table(("season",))
-    versus_tables = _versus_tables(port_slug, results)
-    check = promotion(results["current_pipeline"][0], results[config.name][0])
-    result = {"port": port_slug, "candidate": config.name, "promotion": check,
+    versus_tables = _versus_tables(official, results)
+    check = promotion(results["current_pipeline"][0], results[chosen.name][0], coverage=covered, tables=official)
+    result = {"port": port_slug, "candidate": chosen.name, "promotion": check,
               "pooled": pooled.to_dict("records"), "by_horizon": by_horizon.to_dict("records"),
-              "by_season": by_season.to_dict("records"), "versus_tables": versus_tables.to_dict("records")}
+              "by_season": by_season.to_dict("records"), "versus_tables": versus_tables.to_dict("records"),
+              "coverage": covered.to_dict("records"), "coverage_by_season": covered_seasons.to_dict("records"),
+              "ranges_selection": ranges.to_dict("records"),
+              "ranges_production": production.to_dict("records")}
     out = OUTPUT_DIR / "backtest" / port_slug
     out.mkdir(parents=True, exist_ok=True)
     (out / "report.json").write_text(json.dumps(result, indent=2, default=_plain) + "\n")
-    (out / "report.md").write_text(_markdown(result, pooled, by_horizon, by_season, versus_tables), encoding="utf-8")
+    (out / "report.md").write_text(_markdown(result, pooled, by_horizon, by_season, versus_tables, covered, covered_seasons),
+                                   encoding="utf-8")
     return result
 
-def _versus_tables(port_slug: str, results: dict) -> pd.DataFrame:
+def _versus_tables(official: pd.DataFrame, results: dict) -> pd.DataFrame:
     """The official tables against each candidate's one-year-ahead forecast, per shared test year."""
-    official = score_fixed(port_slug, load_tables(port_slug))
     if official.empty:
         return pd.DataFrame()
     frames = []
@@ -91,10 +107,10 @@ def _versus_tables(port_slug: str, results: dict) -> pd.DataFrame:
 def _plain(value):
     return value.item() if hasattr(value, "item") else str(value)
 
-def _markdown(result: dict, pooled, by_horizon, by_season, versus_tables) -> str:
+def _markdown(result: dict, pooled, by_horizon, by_season, versus_tables, covered, covered_seasons) -> str:
     check = result["promotion"]
     lines = [f"# Backtest report: {result['port']}", "",
-             f"Selected model A: `{result['candidate']}`. Selection set: test years up to {SELECTION_LAST_YEAR}; "
+             f"Selected model: `{result['candidate']}`. Selection set: test years up to {SELECTION_LAST_YEAR}; "
              "final set: later years. Truth: QC-passed gauge readings. A hit is within ±30 min and ±0.30 m.", ""]
     if result["port"] in CAVEATS:
         lines += [f"**Caveat:** {CAVEATS[result['port']]}", ""]
@@ -105,13 +121,22 @@ def _markdown(result: dict, pooled, by_horizon, by_season, versus_tables) -> str
         if len(frame):
             shown = frame[[*keys, *[c for c in SHOWN if c in frame.columns]]]
             lines += [f"## {title}", "", "```text", shown.round(3).to_string(index=False), "```", ""]
+    seasons_grid = covered_seasons[covered_seasons["season"] != "all"].pivot(index="output", columns="season",
+                                                                            values="covered_pct")
+    grid = covered.pivot(index="output", columns="horizon", values="covered_pct").join(seasons_grid)
+    lines += ["## Error-range coverage on the final set (%)", "",
+              "90% ranges calibrated on the selection folds; the band is 88-92. Columns: all, each horizon, "
+              "each season.", "",
+              "```text", grid.round(1).to_string(), "```", ""]
     lines += ["## Promotion checks against the current pipeline", ""]
     lines += [f"- {name}: {'PASS' if passed else 'FAIL'}" for name, passed in check["checks"].items()]
     joint = check["joint"]
     seasons = ", ".join(f"{k} {v:+.1f}" for k, v in check["season_diff_pp"].items())
+    tables = ", ".join(f"{year} {diff:+.1f}" for year, diff in check["versus_tables_pp"].items()) or "no overlap"
     lines += ["", f"Joint share difference: {joint['diff']:+.2f} points "
                   f"(95% interval {joint['lo']:+.2f} to {joint['hi']:+.2f}).",
               f"Season differences (points): {seasons}.",
-              f"Publishable horizons: {check['publishable_horizons']}. Coverage check: {check['coverage_check']}.",
+              f"Against the official tables (points): {tables}.",
+              f"Publishable horizons: {check['publishable_horizons']}.",
               f"Overall: {'PASSED' if check['passed'] else 'NOT PASSED'}.", ""]
     return "\n".join(lines)
