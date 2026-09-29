@@ -55,3 +55,18 @@ def test_results_are_cached_and_identical(tmp_path):
 def test_one_year_of_readings_cannot_be_cross_fitted():
     with pytest.raises(ValueError, match="two years"):
         cross_fit(gauge(2010, 2010), "haldia", CONFIG)
+
+def test_cache_key_follows_every_module_the_cross_fit_depends_on(tmp_path, monkeypatch):
+    import shutil
+
+    copy = tmp_path / "root"
+    shutil.copytree(crossfit.ROOT / "src" / "tide", copy / "src" / "tide")
+    monkeypatch.setattr(crossfit, "ROOT", copy)
+    readings = gauge(2010, 2011)
+    before = crossfit._key(readings, "haldia", CONFIG)
+    for module in ("features", "ports"):      # the curve grid, year boundaries and latitude
+        path = copy / "src" / "tide" / f"{module}.py"
+        path.write_text(path.read_text(encoding="utf-8") + "\n# changed\n", encoding="utf-8")
+        after = crossfit._key(readings, "haldia", CONFIG)
+        assert after != before, module
+        before = after

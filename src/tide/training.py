@@ -10,6 +10,7 @@ import json
 import pandas as pd
 
 from tide import audit, ports, qc, registry, report, selection, store
+from tide.candidates import window
 from tide.stack import StackCandidate, StackConfig
 
 EVENT_DEFINITION = ("high water: maximum of the 1-minute curve; low water: centre of the interval within 1 cm "
@@ -28,7 +29,7 @@ def fit_version(port_slug: str, promote: bool = False, n_jobs: int = 4) -> str:
         path = ports.OUTPUT_DIR / "backtest" / port_slug / "report.json"
         saved = json.loads(path.read_text()) if path.exists() else {}
         result = saved if saved.get("candidate") == config.name else {}   # never another model's scores
-    readings = store.load_gauge(port_slug, passed_only=True)
+    readings = window(store.load_gauge(port_slug, passed_only=True), config.a.window_years)   # what is actually fitted
     fitted = StackCandidate(config).fit(readings, port_slug)
     promotion = result.get("promotion", {})
     ranges = pd.DataFrame(result["ranges_production"]) if result.get("ranges_production") else None

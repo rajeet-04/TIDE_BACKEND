@@ -21,7 +21,7 @@ from tide.ports import ROOT, ist_year_start, ist_years, port
 
 CACHE_DIR = ROOT / ".cache" / "crossfit"
 EVENT_PAD = pd.Timedelta(hours=13)   # events on each side of a year, so edge events have neighbours
-SOURCES = ("harmonic", "events", "crossfit")
+SOURCES = ("ports", "harmonic", "events", "features", "crossfit")   # every module that shapes a cached result
 
 @dataclass
 class CrossFit:
