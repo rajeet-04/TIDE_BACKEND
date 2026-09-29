@@ -4,6 +4,7 @@ from __future__ import annotations
 import hashlib
 import os
 import pickle
+import re
 from importlib.metadata import version
 from collections.abc import Callable
 from dataclasses import asdict, dataclass
@@ -21,7 +22,9 @@ CACHE_DIR = ROOT / ".cache" / "backtest"
 SELECTION_LAST_YEAR = 2019  # moves forward with the final set when new gauge years arrive (spec 5.2)
 ORIGINS = {"haldia": list(range(2008, 2025)), "diamond_harbour": list(range(2008, 2017)) + [2021]}
 HORIZONS = 3
-RESULT_MODULES = ("ports", "store", "harmonic", "events", "backtest", "candidates")
+RESULT_MODULES = ("ports", "store", "harmonic", "events", "backtest", "candidates", "features", "crossfit",
+                  "learners", "stack")
+LIBRARIES = ("numpy", "pandas", "scipy", "scikit-learn", "utide", "lightgbm", "xgboost", "torch")
 
 @dataclass(frozen=True)
 class Fold:
@@ -70,7 +73,8 @@ def run(port_slug: str, candidate: Candidate, fold_list: list[Fold], *, n_jobs: 
         return pd.DataFrame(), pd.DataFrame()
     config = getattr(candidate, "config", None)  # names do not cover every setting
     variant = hashlib.sha256(repr(asdict(config)).encode()).hexdigest()[:8] if config is not None else "fixed"
-    cache = CACHE_DIR / port_slug / _cache_key(gauge) / f"{candidate.name}-{variant}"
+    folder = re.sub(r"[^A-Za-z0-9+._=-]", "_", candidate.name)   # names hold / : ( ) , which paths cannot
+    cache = CACHE_DIR / port_slug / _cache_key(gauge) / f"{folder}-{variant}"
     jobs = [delayed(_run_origin)(port_slug, candidate, fs, gauge, cache) for _, fs in sorted(by_origin.items())]
     threads = max(1, (os.cpu_count() or 1) // max(1, n_jobs))
     with parallel_config(backend="loky", inner_max_num_threads=threads):
@@ -80,7 +84,7 @@ def run(port_slug: str, candidate: Candidate, fold_list: list[Fold], *, n_jobs: 
 
 def _cache_key(gauge: pd.DataFrame) -> str:
     digest = hashlib.sha256()
-    for library in ("numpy", "pandas", "scipy", "scikit-learn", "utide"):  # upgrades change results
+    for library in LIBRARIES:  # upgrades change results
         digest.update(f"{library}={version(library)}".encode())
     for path in [ROOT / "src" / "tide" / f"{m}.py" for m in RESULT_MODULES] + [ROOT / "src" / "utide_event_model.py"]:
         if path.exists():
@@ -108,7 +112,9 @@ def _run_origin(port_slug: str, candidate: Candidate, fs: list[Fold], gauge: pd.
                                    "predicted_m": fitted.levels(pd.DatetimeIndex(observed["time_utc"]))}).assign(**tag))
     result = (pd.concat(events, ignore_index=True), pd.concat(hours, ignore_index=True))
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(pickle.dumps(result))
+    temporary = path.with_suffix(f".{os.getpid()}.tmp")   # an interrupted run never leaves half a file
+    temporary.write_bytes(pickle.dumps(result))
+    os.replace(temporary, path)
     return result
 
 def summary(events: pd.DataFrame, hours: pd.DataFrame, by=("horizon", "season", "state")) -> pd.DataFrame:

@@ -79,9 +79,15 @@ class _CalibratedEvents:
         return pd.DataFrame({"state": ev["state"].to_numpy(), "time_utc": times, "height_m": ev["height_m"].to_numpy()})
 
 def candidate(name: str):
-    """A candidate by name: 'current_pipeline', 'utide_only' or a model A name such as A-w8-auto-side-trend."""
+    """A candidate by name: 'current_pipeline', 'utide_only', a model A name such as
+    A-w8-auto-side-trend, or model A with B's corrections such as
+    A-wall-auto+shallow-side-notrend/lv:lgbm-l31-m100/ev:lgbm-l31-m40."""
     if name == "current_pipeline":
         return CurrentPipeline()
     if name == "utide_only":
         return UTideOnly()
+    if "/" in name:
+        from tide.stack import StackCandidate, StackConfig
+
+        return StackCandidate(StackConfig.from_name(name))
     return HarmonicCandidate(HarmonicConfig.from_name(name))
