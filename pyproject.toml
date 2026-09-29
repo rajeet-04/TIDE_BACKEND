@@ -14,7 +14,7 @@ dependencies = [
     "pypdf>=6.13.3",
     "scikit-learn>=1.8.0",
     "scipy>=1.18.1",
-    "torch>=2.10.0",
+    "torch>=2.13.0",
     "utide>=0.3.1",
     "xgboost>=3.4.1",
 ]
@@ -36,12 +36,11 @@ module-name = "tide"
 testpaths = ["tests"]
 markers = ["slow: fits models on the full gauge record"]
 
-# Pull torch from the official CUDA 12.8 wheel index so we get the
-# Blackwell-compatible (sm_120) build for the RTX 50-series.
+# CPU-only torch: training runs on the CPU and the production VM has no GPU.
 [[tool.uv.index]]
-name = "pytorch-cu128"
-url = "https://download.pytorch.org/whl/cu128"
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
 [tool.uv.sources]
-torch = { index = "pytorch-cu128" }
+torch = { index = "pytorch-cpu" }
