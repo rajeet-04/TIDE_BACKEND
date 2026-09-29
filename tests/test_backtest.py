@@ -62,3 +62,14 @@ def test_scores_are_reproducible(tmp_path, monkeypatch):
     second = backtest.run("haldia", TwoConstituents(), [Fold(2002, 2002)])
     pdt.assert_frame_equal(first[0], second[0])
     pdt.assert_frame_equal(first[1], second[1])
+
+def test_configs_sharing_a_name_do_not_share_cached_results(tmp_path, monkeypatch):
+    from tide.candidates import HarmonicCandidate
+
+    use_synthetic_gauge(monkeypatch, tmp_path)
+    plain = HarmonicCandidate(HarmonicConfig(constituents=("M2", "S2"), seasonal=0, trend=False))
+    seasonal = HarmonicCandidate(HarmonicConfig(constituents=("M2", "S2"), seasonal=3, trend=False))
+    assert plain.name == seasonal.name
+    backtest.run("haldia", plain, [Fold(2002, 2002)])
+    backtest.run("haldia", seasonal, [Fold(2002, 2002)])
+    assert len(list(tmp_path.rglob("*.pkl"))) == 2

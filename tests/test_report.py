@@ -37,3 +37,15 @@ def test_final_report_writes_markdown_and_json(tmp_path, monkeypatch):
     text = (tmp_path / "backtest" / "haldia" / "report.md").read_text(encoding="utf-8")
     assert "Promotion checks against the current pipeline" in text and "joint_better: PASS" in text
     assert json.loads((tmp_path / "backtest" / "haldia" / "report.json").read_text())["pooled"]
+
+def test_diamond_harbour_report_carries_the_phase_caveat(tmp_path, monkeypatch):
+    results = {"A-w8-auto-noside-trend": fake_results(0.8), "current_pipeline": fake_results(0.9),
+               "utide_only": fake_results(0.7)}
+    monkeypatch.setattr(report, "OUTPUT_DIR", tmp_path)
+    monkeypatch.setattr(report, "load_gauge", lambda port_slug, passed_only=False: pd.DataFrame(
+        {"time_utc": pd.date_range(ist_year_start(2018), ist_year_start(2022), freq="30D")}))
+    monkeypatch.setattr(report, "run", lambda port_slug, cand, fold_list, n_jobs=1: results[cand.name])
+    monkeypatch.setattr(report, "load_tables", lambda port_slug: pd.DataFrame())
+    report.final_report("diamond_harbour", HarmonicConfig(window_years=8), n_jobs=1)
+    text = (tmp_path / "backtest" / "diamond_harbour" / "report.md").read_text(encoding="utf-8")
+    assert "Caveat" in text and "10 min later" in text

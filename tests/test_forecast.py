@@ -49,3 +49,11 @@ def test_bad_requests_are_clear_errors(current_model):
         forecast.predict("haldia", "2026-10-02")
     with pytest.raises(FileNotFoundError):
         registry.set_current("haldia", "20000101-missing")
+
+def test_refitting_never_overwrites_a_saved_version(current_model):
+    before = (registry.MODELS_DIR / "haldia" / current_model / "a.json").read_text()
+    model = registry.load_current("haldia")[1]
+    again = registry.save_version("haldia", model, {"note": "second fit"})
+    assert again != current_model
+    assert (registry.MODELS_DIR / "haldia" / current_model / "a.json").read_text() == before
+    assert "note" not in registry.load_current("haldia")[2]

@@ -206,7 +206,7 @@ The new model lives in `src/tide/` and runs with `uv run tide <command> --help`.
 | `tide tables-api --port haldia --year 2024` | Stores the official table events for a year (benchmark only). |
 | `tide backtest --port haldia --candidate current_pipeline` | Scores one candidate on the rolling yearly folds. |
 | `tide select --port haldia` | Chooses model A settings on the selection years and scores the final years; writes `output/backtest/<port>/report.md`. |
-| `tide fit --port haldia --promote` | Fits the selected model on all QC-passed readings and saves a version under `models/`. |
+| `tide fit --port haldia` | Fits the selected model on all QC-passed readings and saves a new version under `models/`. Add `--promote` to make it current; it re-runs the final backtest and refuses unless the promotion checks pass. |
 | `tide predict --port haldia --start 2026-10-01 --hours 48` | Writes `hourly_water_levels.csv`, `predicted_tide_events.csv`, `tide_frequency.csv` and the chart. |
 
 Times without a zone are read as IST. Heights are above chart datum (Survey of India).

@@ -4,8 +4,9 @@ from __future__ import annotations
 import hashlib
 import os
 import pickle
+from importlib.metadata import version
 from collections.abc import Callable
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Protocol
 
 import numpy as np
@@ -67,7 +68,9 @@ def run(port_slug: str, candidate: Candidate, fold_list: list[Fold], *, n_jobs: 
         by_origin.setdefault(fold.origin, []).append(fold)
     if not by_origin:
         return pd.DataFrame(), pd.DataFrame()
-    cache = CACHE_DIR / port_slug / _cache_key(gauge) / candidate.name
+    config = getattr(candidate, "config", None)  # names do not cover every setting
+    variant = hashlib.sha256(repr(asdict(config)).encode()).hexdigest()[:8] if config is not None else "fixed"
+    cache = CACHE_DIR / port_slug / _cache_key(gauge) / f"{candidate.name}-{variant}"
     jobs = [delayed(_run_origin)(port_slug, candidate, fs, gauge, cache) for _, fs in sorted(by_origin.items())]
     threads = max(1, (os.cpu_count() or 1) // max(1, n_jobs))
     with parallel_config(backend="loky", inner_max_num_threads=threads):
@@ -77,6 +80,8 @@ def run(port_slug: str, candidate: Candidate, fold_list: list[Fold], *, n_jobs: 
 
 def _cache_key(gauge: pd.DataFrame) -> str:
     digest = hashlib.sha256()
+    for library in ("numpy", "pandas", "scipy", "scikit-learn", "utide"):  # upgrades change results
+        digest.update(f"{library}={version(library)}".encode())
     for path in [ROOT / "src" / "tide" / f"{m}.py" for m in RESULT_MODULES] + [ROOT / "src" / "utide_event_model.py"]:
         if path.exists():
             digest.update(path.read_bytes())

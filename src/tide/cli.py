@@ -129,10 +129,19 @@ def _fit(args: argparse.Namespace) -> None:
     from tide.store import flags_path, load_gauge
 
     config = HarmonicConfig.from_name(json.loads(selected_path(args.port).read_text())["candidate"])
+    report_path = OUTPUT_DIR / "backtest" / args.port / "report.json"
+    if args.promote:
+        from tide.report import final_report
+
+        promotion = final_report(args.port, config, n_jobs=4)["promotion"]
+        if promotion["passed"] is not True:
+            raise SystemExit(f"refusing to promote {args.port}: fresh backtest promotion checks did not pass")
+    else:
+        saved = json.loads(report_path.read_text()) if report_path.exists() else {}
+        promotion = saved["promotion"] if saved.get("candidate") == config.name else {}  # never another model's scores
+
     train = window(load_gauge(args.port, passed_only=True), config.window_years)
     model = HarmonicModel(port(args.port).lat, config).fit(train["time_utc"], train["height_m"])
-    report_path = OUTPUT_DIR / "backtest" / args.port / "report.json"
-    promotion = json.loads(report_path.read_text())["promotion"] if report_path.exists() else {}
     metadata = {"port": args.port, "config": config.name,
                 "training_start_utc": str(train["time_utc"].min()), "training_end_utc": str(train["time_utc"].max()),
                 "training_readings": len(train), "gauge_csv_sha256": file_sha256(DATA_DIR / f"{args.port}.csv"),

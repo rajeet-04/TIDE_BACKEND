@@ -18,6 +18,10 @@ GRID = [HarmonicConfig(window_years=w, constituents=c, side_terms=s, trend=t)
         for w, c, s, t in itertools.product((5, 8, 12, None), ("auto", "auto+shallow"), (False, True), (False, True))]
 SHOWN = ["candidate", "observed", "joint_pct", "time_mae_min", "time_p95_min", "time_bias_min",
          "height_mae_m", "height_p95_m", "height_bias_m", "missed", "extra", "hourly_rmse_m"]
+# Findings from the per-year audit that every final score of a port must carry (decision log 2026-09-27).
+CAVEATS = {"diamond_harbour": "tides in the 2021–2023 final years run about 10 min later than in 2000–2016 "
+                              "(M2 phase about +5° against the same months), consistent with a gauge-site change; "
+                              "final scores there understate a model fitted to earlier years."}
 
 def selected_path(port_slug: str):
     return ROOT / "models" / port_slug / "selected.json"
@@ -92,6 +96,8 @@ def _markdown(result: dict, pooled, by_horizon, by_season, versus_tables) -> str
     lines = [f"# Backtest report: {result['port']}", "",
              f"Selected model A: `{result['candidate']}`. Selection set: test years up to {SELECTION_LAST_YEAR}; "
              "final set: later years. Truth: QC-passed gauge readings. A hit is within ±30 min and ±0.30 m.", ""]
+    if result["port"] in CAVEATS:
+        lines += [f"**Caveat:** {CAVEATS[result['port']]}", ""]
     sections = (("Final set, all horizons", pooled, []), ("Final set by horizon", by_horizon, ["horizon"]),
                 ("Final set by season", by_season, ["season"]),
                 ("Against the official tables (one year ahead)", versus_tables, ["test_year"]))

@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 import subprocess
-from datetime import date
+from datetime import UTC, datetime
 from pathlib import Path
 
 from tide.harmonic import HarmonicModel
@@ -14,11 +14,18 @@ from tide.ports import ROOT
 MODELS_DIR = ROOT / "models"
 
 def save_version(port_slug: str, model: HarmonicModel, metadata: dict) -> str:
-    version = f"{date.today():%Y%m%d}-{model.config.name}"
-    folder = MODELS_DIR / port_slug / version
-    folder.mkdir(parents=True, exist_ok=True)
-    (folder / "a.json").write_text(json.dumps(model.to_dict()) + "\n")
-    (folder / "metadata.json").write_text(json.dumps(metadata, indent=2, default=str) + "\n")
+    """Save a new, immutable version: written to a temporary folder, then renamed into place.
+    An existing version is never overwritten."""
+    stamp = f"{datetime.now(UTC):%Y%m%dT%H%M%SZ}-{model.config.name}"
+    version, n = stamp, 1
+    while (MODELS_DIR / port_slug / version).exists():
+        n += 1
+        version = f"{stamp}-{n}"
+    temporary = MODELS_DIR / port_slug / f".{version}.tmp"
+    temporary.mkdir(parents=True)
+    (temporary / "a.json").write_text(json.dumps(model.to_dict()) + "\n")
+    (temporary / "metadata.json").write_text(json.dumps(metadata, indent=2, default=str) + "\n")
+    os.rename(temporary, MODELS_DIR / port_slug / version)
     return version
 
 def set_current(port_slug: str, version: str) -> None:

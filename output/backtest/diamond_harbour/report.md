@@ -2,6 +2,8 @@
 
 Selected model A: `A-wall-auto+shallow-side-notrend`. Selection set: test years up to 2019; final set: later years. Truth: QC-passed gauge readings. A hit is within ±30 min and ±0.30 m.
 
+**Caveat:** tides in the 2021–2023 final years run about 10 min later than in 2000–2016 (M2 phase about +5° against the same months), consistent with a gauge-site change; final scores there understate a model fitted to earlier years.
+
 ## Final set, all horizons
 
 ```text
