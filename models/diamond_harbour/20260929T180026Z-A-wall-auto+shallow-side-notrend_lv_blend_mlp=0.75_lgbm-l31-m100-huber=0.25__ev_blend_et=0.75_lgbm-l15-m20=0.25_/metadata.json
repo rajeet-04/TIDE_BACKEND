@@ -1,0 +1,52 @@
+{
+  "port": "diamond_harbour",
+  "candidate": "A-wall-auto+shallow-side-notrend/lv:blend(mlp=0.75,lgbm-l31-m100-huber=0.25)/ev:blend(et=0.75,lgbm-l15-m20=0.25)",
+  "training_start_utc": "1999-12-31 18:30:00+00:00",
+  "training_end_utc": "2023-04-15 17:30:00+00:00",
+  "training_readings": 155779,
+  "gauge_csv_sha256": "67ebbfeda8cfd2bb51ea1530663647c5cc98086ffc03581b304c2baff0fc159d",
+  "qc_flags_sha256": "ccb1e3317d0d39ac61136be6ef6f21a4c0dcb58bea851be5d7646f2800a9bc05",
+  "code_commit": "b69efbb380a79419c8911e0c8a383e37998cf251",
+  "publishable_horizons": [],
+  "backtest_promotion": {
+    "passed": false,
+    "checks": {
+      "joint_better": false,
+      "time_mae_not_worse": true,
+      "height_mae_not_worse": true,
+      "no_season_worse_than_1pp": false,
+      "coverage_88_92": false,
+      "beats_tables": true
+    },
+    "joint": {
+      "diff": 2.238209432454037,
+      "lo": -0.5004694028943718,
+      "hi": 5.286409977928038
+    },
+    "time_mae": {
+      "diff": -0.12264239233285376,
+      "lo": -0.776638808951862,
+      "hi": 0.5424007257426562
+    },
+    "height_mae": {
+      "diff": -0.01208527167165913,
+      "lo": -0.02264874540590245,
+      "hi": -0.001519575959945317
+    },
+    "season_diff_pp": {
+      "dry": -0.8849557522123916,
+      "pre_monsoon": 13.913043478260875,
+      "monsoon": 8.045977011494244,
+      "post_monsoon": -1.2903225806451672
+    },
+    "joint_by_horizon": {
+      "1": 92.60450160771704,
+      "2": 89.84238178633976,
+      "3": 91.869918699187
+    },
+    "publishable_horizons": [],
+    "versus_tables_pp": {}
+  },
+  "ranges": "split-conformal 90%, recalibrated on all folds",
+  "event_definition": "high water: maximum of the 1-minute curve; low water: centre of the interval within 1 cm of the minimum; with an event correction, the corrected time and height of that event"
+}
