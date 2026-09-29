@@ -1,5 +1,8 @@
 {
-  "candidate": "A-wall-auto+shallow-side-notrend",
-  "selection_joint_pct": 84.93,
-  "selected_on": "2026-09-27"
+  "candidate": "A-wall-auto+shallow-side-notrend/lv:blend(mlp=0.75,lgbm-l31-m100-huber=0.25)/ev:blend(et=0.75,lgbm-l15-m20=0.25)",
+  "a_candidate": "A-wall-auto+shallow-side-notrend",
+  "selection_joint_pct": 92.76,
+  "selection_hourly_rmse_m": 0.1873,
+  "a_selection_joint_pct": 84.93,
+  "selected_on": "2026-09-29"
 }

@@ -75,3 +75,6 @@ dmypy.json
 cython_debug/
 graphify-out/
 .runtime/
+
+# Saved model versions with learners (tens of MB; rebuilt exactly by `tide fit`). Plan 1a folders stay tracked.
+/models/*/*T*Z-*/

@@ -1,7 +1,7 @@
 # Tide Model Design: Haldia and Diamond Harbour
 
 **Date:** 2026-09-27
-**Status:** Approved 2026-09-27; refined while planning 1a and 1b
+**Status:** Approved 2026-09-27; refined while planning 1a and 1b; 1b results recorded 2026-09-29
 **Supporting material:** `bmad-output/brainstorming-report.md`, `bmad-output/decision-log.md`
 
 ## 1. Goal
