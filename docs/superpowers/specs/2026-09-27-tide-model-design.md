@@ -1,7 +1,7 @@
 # Tide Model Design: Haldia and Diamond Harbour
 
 **Date:** 2026-09-27
-**Status:** Approved 2026-09-27; refined while planning 1a
+**Status:** Approved 2026-09-27; refined while planning 1a and 1b
 **Supporting material:** `bmad-output/brainstorming-report.md`, `bmad-output/decision-log.md`
 
 ## 1. Goal
@@ -61,7 +61,7 @@ Measured by the backtest in section 5 against gauge readings the model never saw
 | GloFAS historical river discharge (Copernicus early-warning store, CEMS-FLOODS licence) | 1979 onward, daily | Training S; seasonal diagnostics |
 | NASA GPM IMERG precipitation (Earthdata login; user has credentials) | 2000 onward, half-hourly; near-real-time feed | Challenger rainfall input for S, compared against ERA5 rainfall in the backtest |
 | Forecasts at prediction time: ECMWF open data (CC BY 4.0) or NOAA GFS (public domain), plus GloFAS forecasts | Next 10–30 days | Running S |
-| Astronomy: Skyfield with JPL DE440s ephemeris | 1849–2150, computed locally | Features, moon phases, sunrise and sunset |
+| Astronomy: Skyfield with JPL DE440s ephemeris | 1849–2150, computed locally | Moon phases, sunrise and sunset (1c). B's features use UTide's astronomical arguments, which trees only need as smooth proxies (decision log 2026-09-29) |
 
 ERA5 and GloFAS grid points are chosen by their correlation with model residuals **in training years only**, so that choice doesn't leak test information.
 
@@ -191,6 +191,16 @@ LightGBM predicts A's hourly residual.
 - a small PyTorch network on the same features
 - the existing ExtraTrees event calibrator
 
+**Structure chosen while planning 1b** (selection folds only; decision log 2026-09-29):
+
+- **Cross-fitting:** A's weighted normal equations are summed per year; dropping one year's share and solving refits without it. This matches a refit from scratch to 1.5 mm RMS and takes under a second.
+- **Two independent corrections** learn from the same cross-fitted material:
+  - a **level correction** (the hourly residual above), evaluated on whole IST hours and joined by a cubic spline;
+  - an **event correction**: two learners predict the timing and height errors of A's 1-minute events from each event's context and the astronomical state, and move the event by them. This is the ExtraTrees calibrator's idea applied to A, open to any learner.
+- **Where each is used:** events come from the event correction and hourly levels from the level correction. The two are not stacked: training the event correction on level-corrected events made it worse on every planning fold. The chosen stack is the best of A alone, A with one correction, and A with both, by joint share and then hourly RMSE.
+- **Evidence:** mean joint share over nine selection fold-years was 88.8% for A, 91.3% for the current pipeline, 92.4% with the level correction and 93.8% with a LightGBM event correction.
+- **Compute:** every learner trains on the CPU with one thread. Results are bit-for-bit reproducible, and a model chosen here refits unchanged on the CPU VM.
+
 ### 4.4 Layer S: short-range correction
 
 - **Target:** the residual of the chosen long-range model (A or A+B).
@@ -210,7 +220,7 @@ LightGBM predicts A's hourly residual.
 
 ### 4.5 Ensembles
 
-A weighted average of the top models, with weights chosen in the selection folds, competes as its own candidate.
+A weighted average of the top models, with weights chosen in the selection folds, competes as its own candidate. In 1b the blends are made within each correction: the top two learners at weights 0.25, 0.5 and 0.75.
 
 ### 4.6 Event extraction
 
@@ -234,6 +244,14 @@ Split-conformal ranges are computed for each combination of:
 
 - **Backtest:** ranges are calibrated on the selection folds, and their coverage is checked on the final folds.
 - **Production:** ranges are recalibrated on all folds.
+
+**Details fixed while planning 1b:**
+
+- The horizon buckets are the horizons 1, 2 and 3.
+- A range bounds observed minus predicted, from split-conformal quantiles.
+- A cell with fewer than 100 errors borrows from its horizon, then from the whole output.
+- Coverage counts a missed event as outside its range. It is reported pooled, per horizon and per season.
+- Forecasts beyond horizon 3 use horizon 3's ranges and are flagged.
 
 ## 5. Backtest (train/test split and cross-validation)
 
@@ -282,7 +300,9 @@ A candidate replaces the champion only if it meets all of section 1.2 on the fin
 1. higher joint score, with the interval of the difference above zero
 2. timing and height MAE not worse beyond their intervals
 3. no season worse by more than 1 percentage point
-4. range coverage within 88–92%
+4. range coverage within 88–92% for every output type, pooled over the final set
+
+Criterion 2 of section 1.2 (beat the official tables wherever they overlap) is checked with them. A horizon is published only if it meets criterion 5, including coverage within 88–92% at that horizon.
 
 ## 6. Interface and outputs
 
@@ -395,20 +415,25 @@ A `NOTICE` file covers:
 
 The work is too large for one plan, so it is split into three plans run in order:
 
-1. **Core** (sections 3, 4.1–4.3, 4.5–4.7, 5, 6, 8), in two parts:
-   - **1a:**
+1. **Core** (sections 3, 4.1–4.3, 4.5–4.7, 5, 6, 8), in three parts:
+   - **1a** (done):
      - data store, QC, audit, datum registry
      - backtest harness, with the current pipeline and tables as baselines
      - model A variants, selected and scored
      - `predict` and `backtest` commands serving model A in the current file formats
-   - **1b:**
+   - **1b** (`docs/superpowers/plans/2026-09-29-tide-core-1b.md`):
      - B and its challengers, ensembles and error ranges
-     - Diamond Harbour gap filling and the official-table archiver
-     - `train` with the promotion rule
-     - windows, datums, moon and sun
+     - `train` with the full promotion rule
+     - versions holding B and ranges; forecasts with ranges
      - regression snapshots
+   - **1c:**
+     - hatyan as a comparison engine
+     - Diamond Harbour gap filling and the official-table archiver
+     - moon phases, spring/neap labels, sunrise and sunset
+     - windows, datums and `observed()`
+     - the PSMSL trend check
 
-   1b is planned after 1a runs, so its design can use 1a's backtest results.
+   1b was planned after 1a ran, and 1c is planned after 1b runs, so each design can use the previous part's backtest results.
 2. **Short range** (section 4.4): ERA5 and GloFAS ingestion, layer S, archived-forecast validation, fallback.
 3. **Operations** (section 7): registry and promotion, schedules on the VM, monitoring, NOTICE file.
 
