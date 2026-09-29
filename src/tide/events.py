@@ -68,8 +68,9 @@ def _stand_centre(values: np.ndarray, i: int) -> float:
     return (lo + hi) / 2
 
 def model_events(levels: Callable[[pd.DatetimeIndex], np.ndarray], start: pd.Timestamp, end: pd.Timestamp) -> pd.DataFrame:
-    """Events of a model's one-minute curve in [start, end), padded so edge tides are found."""
-    times = pd.date_range(start - PAD, end + PAD, freq="1min", inclusive="left")
+    """Events of a model's one-minute curve in [start, end), padded so edge tides are found.
+    The curve is sampled on whole minutes, so overlapping windows see the same samples."""
+    times = pd.date_range((start - PAD).floor("min"), (end + PAD).ceil("min"), freq="1min", inclusive="left")
     events = find_events(times, levels(times), step_minutes=1)
     inside = (events["time_utc"] >= start) & (events["time_utc"] < end)
     return events[inside].reset_index(drop=True)

@@ -118,3 +118,50 @@ def test_components_add_up():
     parts = model.predict(times, components=True)
     np.testing.assert_allclose(parts["astronomical_m"] + parts["seasonal_m"], parts["height_m"])
     np.testing.assert_allclose(parts["height_m"], model.predict(times))
+
+def test_leaving_a_year_out_equals_refitting_without_it():
+    from tide.harmonic import leave_one_year_out
+    from tide.ports import ist_years
+
+    times = hourly("2010-01-01", 4)
+    config = HarmonicConfig(constituents=("M2", "S2", "K1", "M4"), seasonal=1, trend=False, robust=False)
+    heights = planted(config, times).predict(times) + np.random.default_rng(2).normal(0.0, 0.05, len(times))
+    years = ist_years(times)
+    model = HarmonicModel(LAT, config).fit(times, heights)
+    refits = leave_one_year_out(model, times, heights, years)
+    assert sorted(refits) == sorted(set(years.tolist()))
+    keep = years != 2011
+    np.testing.assert_allclose(refits[2011], HarmonicModel(LAT, config).fit(times[keep], heights[keep]).coef, atol=1e-8)
+
+def test_robust_cross_fit_stays_within_millimetres_of_a_refit():
+    from tide.harmonic import leave_one_year_out
+    from tide.ports import ist_years
+
+    times = hourly("2010-01-01", 4)
+    config = HarmonicConfig(constituents=("M2", "S2", "K1", "M4"), seasonal=1, trend=False)
+    rng = np.random.default_rng(3)
+    heights = planted(config, times).predict(times) + rng.normal(0.0, 0.05, len(times))
+    heights[rng.choice(len(times), size=len(times) // 200, replace=False)] += 2.0
+    years = ist_years(times)
+    model = HarmonicModel(LAT, config).fit(times, heights)
+    held = years == 2012
+    refit = HarmonicModel(LAT, config).fit(times[~held], heights[~held])
+    gap = model.with_coef(leave_one_year_out(model, times, heights, years)[2012]).predict(times[held]) - refit.predict(times[held])
+    assert np.sqrt(np.mean(gap**2)) < 0.005
+
+def test_normal_equations_do_not_depend_on_the_chunk_size(monkeypatch):
+    from tide import harmonic
+
+    times = hourly("2012-01-01", 1)
+    config = HarmonicConfig(constituents=("M2", "K1"), seasonal=1, trend=False)
+    heights = planted(config, times).predict(times) + np.random.default_rng(4).normal(0.0, 0.05, len(times))
+    whole = HarmonicModel(LAT, config).fit(times, heights).coef
+    monkeypatch.setattr(harmonic, "CHUNK", 997)
+    np.testing.assert_allclose(HarmonicModel(LAT, config).fit(times, heights).coef, whole, atol=1e-10)
+
+def test_with_coef_keeps_the_terms_and_swaps_the_coefficients():
+    times = hourly("2012-01-01", 1)
+    model = planted(HarmonicConfig(constituents=("M2",), seasonal=0, trend=False), times)
+    twin = model.with_coef(np.zeros(len(model.coef)))
+    assert twin.columns == model.columns and model.coef[0] == 3.0
+    np.testing.assert_array_equal(twin.predict(times), np.zeros(len(times)))

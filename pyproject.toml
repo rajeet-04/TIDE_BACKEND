@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "joblib>=1.6.0",
+    "lightgbm>=4.7.0",
     "matplotlib>=3.10.9",
     "numpy>=2.4.6",
     "pandas>=3.0.3",
@@ -15,6 +16,7 @@ dependencies = [
     "scipy>=1.18.1",
     "torch>=2.10.0",
     "utide>=0.3.1",
+    "xgboost>=3.4.1",
 ]
 
 [project.scripts]

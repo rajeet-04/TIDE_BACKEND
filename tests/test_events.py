@@ -61,3 +61,8 @@ def test_matching_counts_hits_misses_and_extras():
 def test_coverage_spans_shrink_at_gaps():
     times = pd.date_range(START, periods=10, freq="1h").append(pd.date_range(at(20), periods=10, freq="1h"))
     assert coverage(times) == [(at(2), at(7)), (at(22), at(27))]
+
+def test_window_offsets_below_a_minute_do_not_move_events():
+    exact = model_events(cosine, at(13), at(36))
+    shifted = model_events(cosine, at(13) + pd.Timedelta(seconds=20), at(36))
+    assert shifted.time_utc.tolist() == exact.time_utc.tolist() == [at(18), at(24), at(30)]

@@ -14,7 +14,7 @@ import pandas as pd
 from joblib import Parallel, delayed, parallel_config
 
 from tide.events import coverage, extra_events, find_events, match_events, model_events, summarize
-from tide.ports import IST, ROOT, ist_year_start, ist_years, season_of
+from tide.ports import IST, ROOT, SEASONS, ist_year_start, ist_years, season_of
 from tide.store import load_gauge
 
 CACHE_DIR = ROOT / ".cache" / "backtest"
@@ -134,7 +134,6 @@ def joint_pct(events: pd.DataFrame) -> float:
     observed = events[events["kind"] == "observed"]
     return 100.0 * observed["hit"].sum() / len(observed) if len(observed) else float("nan")
 
-SEASONS = ("dry", "pre_monsoon", "monsoon", "post_monsoon")
 MATCH_KEYS = ["origin", "test_year", "horizon", "state", "observed_time_utc"]
 
 def bootstrap_diff(base: pd.DataFrame, cand: pd.DataFrame, metric: str, n: int = 1000, seed: int = 0) -> dict:

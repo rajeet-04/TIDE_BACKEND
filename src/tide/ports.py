@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = ROOT / "data"
 OUTPUT_DIR = ROOT / "output"
 IST = timezone(timedelta(hours=5, minutes=30), "IST")
+SEASONS = ("dry", "pre_monsoon", "monsoon", "post_monsoon")
 _SEASON_BY_MONTH = np.array(["dry"] * 3 + ["pre_monsoon"] * 2 + ["monsoon"] * 4 + ["post_monsoon"] * 3, dtype=object)
 
 @dataclass(frozen=True)

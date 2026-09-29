@@ -10,6 +10,7 @@ Robust fitting is bisquare IRLS with a small ridge penalty.
 """
 from __future__ import annotations
 
+import copy
 from dataclasses import asdict, dataclass
 
 import numpy as np
@@ -136,6 +137,12 @@ class HarmonicModel:
         return pd.DataFrame({"amplitude_m": np.hypot(a, b), "phase_deg": np.degrees(np.arctan2(b, a)) % 360},
                             index=pd.Index(self.names, name="name"))
 
+    def with_coef(self, coef) -> "HarmonicModel":
+        """A copy with the same terms and other coefficients (for example a cross-fitted refit)."""
+        twin = copy.copy(self)
+        twin.coef = np.asarray(coef, dtype=float)
+        return twin
+
     @property
     def mean_level(self) -> float:
         return float(self.coef[0])
@@ -227,25 +234,62 @@ class HarmonicModel:
 
 def _irls(X: np.ndarray, y: np.ndarray, ridge: float, robust: bool, max_iter: int = 30) -> np.ndarray:
     """Least squares, then bisquare reweighting (c = 4.685 MAD-scaled) until coefficients settle."""
-    weights = np.ones(len(y))
-    coef = _wls(X, y, weights, ridge)
+    coef = _wls(X, y, np.ones(len(y)), ridge)
     for _ in range(max_iter if robust else 0):
-        resid = y - X @ coef
-        scale = 1.4826 * np.median(np.abs(resid - np.median(resid)))
-        if scale < 1e-9:
-            break
-        u = resid / (BISQUARE_C * scale)
-        weights = np.where(np.abs(u) < 1.0, (1.0 - u**2) ** 2, 0.0)
-        new = _wls(X, y, weights, ridge)
+        new = _wls(X, y, _bisquare(y - X @ coef), ridge)
         converged = np.max(np.abs(new - coef)) < 1e-6
         coef = new
         if converged:
             break
     return coef
 
+def _normal_equations(X: np.ndarray, y: np.ndarray, weights: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """XᵀWX and XᵀWy, accumulated in row chunks so no weighted copy of the whole design exists."""
+    gram = np.zeros((X.shape[1], X.shape[1]))
+    rhs = np.zeros(X.shape[1])
+    for i in range(0, len(y), CHUNK):
+        Xw = X[i:i + CHUNK] * weights[i:i + CHUNK, None]
+        gram += X[i:i + CHUNK].T @ Xw
+        rhs += Xw.T @ y[i:i + CHUNK]
+    return gram, rhs
+
+def _solve(gram: np.ndarray, rhs: np.ndarray, ridge: float, n: int) -> np.ndarray:
+    """Solve the normal equations with the ridge penalty on every column but the mean."""
+    system = gram.copy()
+    rest = np.arange(1, system.shape[0])
+    system[rest, rest] += ridge * n
+    return np.linalg.solve(system, rhs)
+
 def _wls(X: np.ndarray, y: np.ndarray, weights: np.ndarray, ridge: float) -> np.ndarray:
-    Xw = X * weights[:, None]
-    gram = X.T @ Xw
-    rest = np.arange(1, gram.shape[0])
-    gram[rest, rest] += ridge * len(y)
-    return np.linalg.solve(gram, Xw.T @ y)
+    return _solve(*_normal_equations(X, y, weights), ridge, len(y))
+
+def _bisquare(resid: np.ndarray) -> np.ndarray:
+    """Bisquare weights (c = 4.685) on residuals scaled by their median absolute deviation."""
+    scale = 1.4826 * np.median(np.abs(resid - np.median(resid)))
+    if scale < 1e-9:
+        return np.ones(len(resid))
+    u = resid / (BISQUARE_C * scale)
+    return np.where(np.abs(u) < 1.0, (1.0 - u**2) ** 2, 0.0)
+
+def leave_one_year_out(model: HarmonicModel, times, heights, years) -> dict[int, np.ndarray]:
+    """Coefficients refit without each year (spec 4.3 cross-fitting).
+
+    The fit's weighted normal equations are summed per year. Removing one year's share and
+    solving refits without that year, holding the final bisquare weights fixed; planning
+    checks on the Haldia record found this within 1.5 mm RMS of refitting from scratch."""
+    if model.coef is None:
+        raise RuntimeError("fit the model first")
+    dn = datenum(times)
+    y = np.asarray(heights, dtype=float)
+    years = np.asarray(years)
+    if len(np.unique(years)) < 2:
+        raise ValueError("leaving a year out needs readings from at least two years")
+    weights = _bisquare(y - model.predict(times)) if model.config.robust else np.ones(len(y))
+    shares = {}
+    for year in np.unique(years):
+        rows = np.flatnonzero(years == year)
+        X = np.vstack([model._design(dn[rows[i:i + CHUNK]]) for i in range(0, len(rows), CHUNK)])
+        shares[int(year)] = (*_normal_equations(X, y[rows], weights[rows]), len(rows))
+    gram = sum(share[0] for share in shares.values())
+    rhs = sum(share[1] for share in shares.values())
+    return {year: _solve(gram - g, rhs - b, model.config.ridge, len(y) - n) for year, (g, b, n) in shares.items()}
