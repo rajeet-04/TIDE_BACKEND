@@ -34,9 +34,17 @@ def build_parser() -> argparse.ArgumentParser:
     choose.add_argument("--skip-grid", action="store_true", help="reuse model A's settings from models/<port>/selected.json")
     choose.set_defaults(handler=_select)
 
-    fit = _port(commands.add_parser("fit", help="fit the selected model A on all QC-passed readings and save a version"))
-    fit.add_argument("--promote", action="store_true", help="make the new version current")
+    fit = _port(commands.add_parser("fit", help="fit the selected model on all QC-passed readings and save a version"))
+    fit.add_argument("--promote", action="store_true",
+                     help="re-run the final backtest and make the version current only if it passes")
+    fit.add_argument("--jobs", type=int, default=4)
     fit.set_defaults(handler=_fit)
+
+    training = _port(commands.add_parser("train", help="QC, audit, select A and B, score the final folds, save a "
+                                                       "version and promote it if it passes"))
+    training.add_argument("--jobs", type=int, default=4)
+    training.add_argument("--skip-qc", action="store_true", help="keep the committed QC flags and audit")
+    training.set_defaults(handler=_train)
 
     pred = _port(commands.add_parser("predict", help="forecast levels and high and low waters"))
     pred.add_argument("--start", required=True, help="ISO time; without a zone it is read as IST")
@@ -125,40 +133,17 @@ def _select(args: argparse.Namespace) -> None:
     print(f"report: output/backtest/{args.port}/report.md")
 
 def _fit(args: argparse.Namespace) -> None:
+    from tide.training import fit_version
+
+    version = fit_version(args.port, promote=args.promote, n_jobs=args.jobs)
+    print(f"saved models/{args.port}/{version}{' and made it current' if args.promote else ''}")
+
+def _train(args: argparse.Namespace) -> None:
     import json
 
-    from tide.candidates import window
-    from tide.harmonic import HarmonicConfig, HarmonicModel
-    from tide.ports import DATA_DIR, OUTPUT_DIR, port
-    from tide.registry import file_sha256, git_commit, save_version, set_current
-    from tide.report import selected_path
-    from tide.store import flags_path, load_gauge
+    from tide.training import train
 
-    config = HarmonicConfig.from_name(json.loads(selected_path(args.port).read_text())["candidate"])
-    report_path = OUTPUT_DIR / "backtest" / args.port / "report.json"
-    if args.promote:
-        from tide.report import final_report
-
-        promotion = final_report(args.port, config, n_jobs=4)["promotion"]
-        if promotion["passed"] is not True:
-            raise SystemExit(f"refusing to promote {args.port}: fresh backtest promotion checks did not pass")
-    else:
-        saved = json.loads(report_path.read_text()) if report_path.exists() else {}
-        promotion = saved["promotion"] if saved.get("candidate") == config.name else {}  # never another model's scores
-
-    train = window(load_gauge(args.port, passed_only=True), config.window_years)
-    model = HarmonicModel(port(args.port).lat, config).fit(train["time_utc"], train["height_m"])
-    metadata = {"port": args.port, "config": config.name,
-                "training_start_utc": str(train["time_utc"].min()), "training_end_utc": str(train["time_utc"].max()),
-                "training_readings": len(train), "gauge_csv_sha256": file_sha256(DATA_DIR / f"{args.port}.csv"),
-                "qc_flags_sha256": file_sha256(flags_path(args.port)), "code_commit": git_commit(),
-                "publishable_horizons": promotion.get("publishable_horizons"), "backtest_promotion": promotion,
-                "event_definition": "high water: maximum of the 1-minute curve; low water: centre of the "
-                                    "interval within 1 cm of the minimum"}
-    version = save_version(args.port, model, metadata)
-    if args.promote:
-        set_current(args.port, version)
-    print(f"saved models/{args.port}/{version}{' and made it current' if args.promote else ''}")
+    print(json.dumps(train(args.port, n_jobs=args.jobs, quality_control=not args.skip_qc), indent=2))
 
 def _predict(args: argparse.Namespace) -> None:
     from tide.forecast import predict, write_outputs
