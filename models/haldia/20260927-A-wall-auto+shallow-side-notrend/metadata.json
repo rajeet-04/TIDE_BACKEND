@@ -1,0 +1,57 @@
+{
+  "port": "haldia",
+  "config": "A-wall-auto+shallow-side-notrend",
+  "training_start_utc": "1999-12-31 18:30:00+00:00",
+  "training_end_utc": "2024-12-31 17:30:00+00:00",
+  "training_readings": 218337,
+  "gauge_csv_sha256": "00401497ba51e0f617f3808af99d291d98acc1d407e797a389969d6f852cc828",
+  "qc_flags_sha256": "d2b9b6bcc45d140fc5f70a062afd78f6efebed621db7fbed98ec87d9240d6a89",
+  "code_commit": "2bd02a9dea2032bb1bc321978da6009bc0c0a49e",
+  "publishable_horizons": [
+    1,
+    2,
+    3
+  ],
+  "backtest_promotion": {
+    "passed": false,
+    "checks": {
+      "joint_better": false,
+      "time_mae_not_worse": false,
+      "height_mae_not_worse": true,
+      "no_season_worse_than_1pp": false
+    },
+    "joint": {
+      "diff": 0.07090187180941576,
+      "lo": -1.7626833235966122,
+      "hi": 2.140280888506376
+    },
+    "time_mae": {
+      "diff": 0.9265103692477855,
+      "lo": 0.5215759392832879,
+      "hi": 1.3505191501384475
+    },
+    "height_mae": {
+      "diff": -0.0008563043220741804,
+      "lo": -0.007927276464964593,
+      "hi": 0.005737592077719012
+    },
+    "season_diff_pp": {
+      "dry": -3.2855778414517687,
+      "pre_monsoon": 0.19790783149562685,
+      "monsoon": -0.07068136839129124,
+      "post_monsoon": 3.483992467043308
+    },
+    "joint_by_horizon": {
+      "1": 87.32274532047646,
+      "2": 87.25184344866705,
+      "3": 87.42200794100964
+    },
+    "publishable_horizons": [
+      1,
+      2,
+      3
+    ],
+    "coverage_check": "pending: error ranges arrive in plan 1b"
+  },
+  "event_definition": "high water: maximum of the 1-minute curve; low water: centre of the interval within 1 cm of the minimum"
+}

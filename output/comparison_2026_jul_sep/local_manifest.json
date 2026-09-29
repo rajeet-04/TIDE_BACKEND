@@ -1,0 +1,151 @@
+{
+  "period_ist": [
+    "2026-07-01 00:00:00",
+    "2026-10-01 00:00:00"
+  ],
+  "end_exclusive": true,
+  "runtime": {
+    "python": "3.12.13",
+    "sklearn": "1.8.0",
+    "utide": "0.3.1",
+    "numpy": "2.5.3",
+    "pandas": "3.0.6"
+  },
+  "models": {
+    "haldia": {
+      "version": 2,
+      "latitude": 22.033333333333335,
+      "trained_at": "2026-06-01T23:22:13",
+      "history_start": "2000-01-01T00:00:00",
+      "history_end": "2024-12-31T23:00:00",
+      "history_rows": 218424,
+      "constituent_count": 68,
+      "calibrator": "extra_trees_lunar_event_context",
+      "calibration": {
+        "observed_historical_events": 35170,
+        "matched_historical_events": 35159,
+        "recent_calibration_start": "2021-01-01T00:00:00",
+        "recent_calibration_events": 5645
+      },
+      "sha256": "138d055886dd833bd559eb66197057b103c0dc3c5ea923cfbd4baa80c2f75252",
+      "hyperparameters": {
+        "bootstrap": false,
+        "ccp_alpha": 0.0,
+        "criterion": "squared_error",
+        "max_depth": null,
+        "max_features": 0.9,
+        "max_leaf_nodes": null,
+        "max_samples": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 15,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "n_estimators": 160,
+        "n_jobs": -1,
+        "oob_score": false,
+        "random_state": 1,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "saved_hourly_forecast_max_abs_difference_m": 8.881784197001252e-16,
+      "saved_event_forecast_check": {
+        "expected_events": 4,
+        "matched_events": 4,
+        "max_time_difference_minutes": 0.0,
+        "max_height_difference_m": 0.0
+      }
+    },
+    "diamond_harbour": {
+      "version": 2,
+      "latitude": 22.2,
+      "trained_at": "2026-06-01T23:23:13",
+      "history_start": "2000-01-01T00:00:00",
+      "history_end": "2023-04-15T23:00:00",
+      "history_rows": 155832,
+      "constituent_count": 68,
+      "calibrator": "extra_trees_lunar_event_context",
+      "calibration": {
+        "observed_historical_events": 25098,
+        "matched_historical_events": 25073,
+        "recent_calibration_start": "2020-01-01T00:00:00",
+        "recent_calibration_events": 1252
+      },
+      "sha256": "aef25f57594ad3880457221533add59667d8d203afa6068cd5275c811ee42a81",
+      "hyperparameters": {
+        "bootstrap": false,
+        "ccp_alpha": 0.0,
+        "criterion": "squared_error",
+        "max_depth": null,
+        "max_features": 0.9,
+        "max_leaf_nodes": null,
+        "max_samples": null,
+        "min_impurity_decrease": 0.0,
+        "min_samples_leaf": 15,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "monotonic_cst": null,
+        "n_estimators": 160,
+        "n_jobs": -1,
+        "oob_score": false,
+        "random_state": 1,
+        "verbose": 0,
+        "warm_start": false
+      },
+      "saved_hourly_forecast_max_abs_difference_m": 4.440892098500626e-16,
+      "saved_event_forecast_check": {
+        "expected_events": 11,
+        "matched_events": 11,
+        "max_time_difference_minutes": 0.0,
+        "max_height_difference_m": 0.0
+      }
+    }
+  },
+  "pdfs": [
+    {
+      "source_pdf": "data\\JULY 2026\\HALDIA.pdf",
+      "sha256": "d2425bca670cca6098e0ca15c990ef1a182ff90f2b4600b34dedaeee2f3b7050",
+      "events": 120,
+      "days": 31,
+      "expected_month": 7
+    },
+    {
+      "source_pdf": "data\\AUGUST 2026\\HALDIA.pdf",
+      "sha256": "53c255899424de7d4a32d81649263dd27c97b85272ec92a78ab917f0f5c40565",
+      "events": 119,
+      "days": 31,
+      "expected_month": 8
+    },
+    {
+      "source_pdf": "data\\PDF\\INDIAN RESPONSIBILITY_2026\\HALDIA.pdf",
+      "sha256": "5e3f0048a0e5e4678cff23b0a14af8dfa40fd258378199ecc6c49cabbcae1881",
+      "events": 116,
+      "days": 30,
+      "expected_month": 9
+    },
+    {
+      "source_pdf": "data\\JULY 2026\\DIAMOND HARBOUR.pdf",
+      "sha256": "1a2474c03a6f00edd0af652b1606c25d72feb77368177d544a00b8686f3f6008",
+      "events": 119,
+      "days": 31,
+      "expected_month": 7
+    },
+    {
+      "source_pdf": "data\\AUGUST 2026\\DIAMOND HARBOUR.pdf",
+      "sha256": "9932a18667aec74fb28f99740dc4efc9e145dd4939c3004f40a89ac971e87b81",
+      "events": 120,
+      "days": 31,
+      "expected_month": 8
+    },
+    {
+      "source_pdf": "data\\PDF\\INDIAN RESPONSIBILITY_2026\\DIAMOND HARBOUR.pdf",
+      "sha256": "d61d09b48785eed5d8c41d3a9ce3b011634e803b3dfa58d0d8f814249e0e34c5",
+      "events": 116,
+      "days": 30,
+      "expected_month": 9
+    }
+  ],
+  "script_sha256": "fe3ccf1e5241dc186b72217046c9dd1202edca3ad38f40603e9e0497dee15858",
+  "model_source_sha256": "d62e6f148be82ce237d056b619c9b3975843715f4dcc23265e0c1677ff0bbbf9",
+  "extractor_source_sha256": "06b69bfbdd1999ac9c576304b4b662ce56f5c43f41add8cedcdcb759c17855f9"
+}

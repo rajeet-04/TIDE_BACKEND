@@ -1,0 +1,105 @@
+{
+  "window": [
+    "2026-07-01T00:00:00",
+    "2026-10-01T00:00:00"
+  ],
+  "missing_pdfs": [
+    "data\\SEPTEMBER 2026\\HALDIA.pdf",
+    "data\\SEPTEMBER 2026\\DIAMOND HARBOUR.pdf"
+  ],
+  "api_clock_shift": {
+    "events_joined": 478,
+    "median_shift_min": 330.0,
+    "share_exactly_median_pct": 100.0
+  },
+  "model_vs_pdf": {
+    "DIAMOND HARBOUR": {
+      "reference_events": 239,
+      "matched": 239,
+      "unmatched": 0,
+      "time_bias_min": -5.75,
+      "time_mae_min": 11.05,
+      "time_rmse_min": 16.26,
+      "height_bias_m": 0.086,
+      "height_mae_m": 0.112,
+      "height_rmse_m": 0.137,
+      "within_time_gate_pct": 93.7,
+      "within_height_gate_pct": 98.7,
+      "joint_pct": 93.3
+    },
+    "HALDIA": {
+      "reference_events": 239,
+      "matched": 239,
+      "unmatched": 0,
+      "time_bias_min": -15.05,
+      "time_mae_min": 15.38,
+      "time_rmse_min": 18.4,
+      "height_bias_m": 0.127,
+      "height_mae_m": 0.133,
+      "height_rmse_m": 0.155,
+      "within_time_gate_pct": 92.1,
+      "within_height_gate_pct": 98.7,
+      "joint_pct": 91.6
+    }
+  },
+  "api_vs_pdf": {
+    "DIAMOND HARBOUR": {
+      "reference_events": 239,
+      "matched": 239,
+      "unmatched": 0,
+      "time_bias_min": 0.0,
+      "time_mae_min": 0.0,
+      "time_rmse_min": 0.0,
+      "height_bias_m": 0.0,
+      "height_mae_m": 0.0,
+      "height_rmse_m": 0.0,
+      "within_time_gate_pct": 100.0,
+      "within_height_gate_pct": 100.0,
+      "joint_pct": 100.0
+    },
+    "HALDIA": {
+      "reference_events": 239,
+      "matched": 239,
+      "unmatched": 0,
+      "time_bias_min": 0.0,
+      "time_mae_min": 0.0,
+      "time_rmse_min": 0.0,
+      "height_bias_m": 0.0,
+      "height_mae_m": 0.0,
+      "height_rmse_m": 0.0,
+      "within_time_gate_pct": 100.0,
+      "within_height_gate_pct": 100.0,
+      "joint_pct": 100.0
+    }
+  },
+  "model_vs_api": {
+    "DIAMOND HARBOUR": {
+      "reference_events": 354,
+      "matched": 354,
+      "unmatched": 0,
+      "time_bias_min": -5.82,
+      "time_mae_min": 11.25,
+      "time_rmse_min": 16.81,
+      "height_bias_m": 0.081,
+      "height_mae_m": 0.111,
+      "height_rmse_m": 0.137,
+      "within_time_gate_pct": 93.5,
+      "within_height_gate_pct": 97.7,
+      "joint_pct": 92.7
+    },
+    "HALDIA": {
+      "reference_events": 354,
+      "matched": 354,
+      "unmatched": 0,
+      "time_bias_min": -14.63,
+      "time_mae_min": 15.22,
+      "time_rmse_min": 18.3,
+      "height_bias_m": 0.133,
+      "height_mae_m": 0.138,
+      "height_rmse_m": 0.16,
+      "within_time_gate_pct": 93.2,
+      "within_height_gate_pct": 97.7,
+      "joint_pct": 92.1
+    }
+  }
+}

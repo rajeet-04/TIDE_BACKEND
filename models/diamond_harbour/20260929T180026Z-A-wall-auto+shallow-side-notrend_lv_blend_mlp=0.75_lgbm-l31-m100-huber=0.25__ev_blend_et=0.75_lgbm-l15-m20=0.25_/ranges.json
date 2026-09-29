@@ -1,0 +1,542 @@
+[
+  {
+    "output": "level",
+    "horizon": 1,
+    "season": "dry",
+    "lower": -0.21434874301697704,
+    "upper": 0.3123303010517433,
+    "n": 21095,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 1,
+    "season": "pre_monsoon",
+    "lower": -0.2695991831909008,
+    "upper": 0.3065943160184488,
+    "n": 13535,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 1,
+    "season": "monsoon",
+    "lower": -0.2511423908810473,
+    "upper": 0.33192692072081,
+    "n": 26352,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 1,
+    "season": "post_monsoon",
+    "lower": -0.2303443865528374,
+    "upper": 0.30100069162841336,
+    "n": 19512,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 2,
+    "season": "dry",
+    "lower": -0.2043768337664562,
+    "upper": 0.316266783495212,
+    "n": 17327,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 2,
+    "season": "pre_monsoon",
+    "lower": -0.2723575641691989,
+    "upper": 0.3090614521070152,
+    "n": 11711,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 2,
+    "season": "monsoon",
+    "lower": -0.2637021162753368,
+    "upper": 0.3458408906210799,
+    "n": 25080,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 2,
+    "season": "post_monsoon",
+    "lower": -0.23567135185936028,
+    "upper": 0.3205563194910943,
+    "n": 19272,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 3,
+    "season": "dry",
+    "lower": -0.22830779877660268,
+    "upper": 0.32815234729331877,
+    "n": 17110,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 3,
+    "season": "pre_monsoon",
+    "lower": -0.28708070932022545,
+    "upper": 0.32101284072054526,
+    "n": 10607,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 3,
+    "season": "monsoon",
+    "lower": -0.22187907957759734,
+    "upper": 0.35516031513926194,
+    "n": 20496,
+    "source": "cell"
+  },
+  {
+    "output": "level",
+    "horizon": 3,
+    "season": "post_monsoon",
+    "lower": -0.2068143011846333,
+    "upper": 0.32574360958152226,
+    "n": 15096,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 1,
+    "season": "dry",
+    "lower": -17.488027596966667,
+    "upper": 18.1882523003,
+    "n": 1696,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 1,
+    "season": "pre_monsoon",
+    "lower": -17.6671986101,
+    "upper": 21.075271041866667,
+    "n": 1088,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 1,
+    "season": "monsoon",
+    "lower": -16.0839595313,
+    "upper": 12.835895408466667,
+    "n": 2121,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 1,
+    "season": "post_monsoon",
+    "lower": -15.9376710386,
+    "upper": 14.9890481753,
+    "n": 1568,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 2,
+    "season": "dry",
+    "lower": -17.687581337,
+    "upper": 15.5804624107,
+    "n": 1394,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 2,
+    "season": "pre_monsoon",
+    "lower": -17.50771838103333,
+    "upper": 20.1942763466,
+    "n": 942,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 2,
+    "season": "monsoon",
+    "lower": -16.3325213964,
+    "upper": 15.8350347497,
+    "n": 2013,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 2,
+    "season": "post_monsoon",
+    "lower": -16.386721811733334,
+    "upper": 18.4617096462,
+    "n": 1544,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 3,
+    "season": "dry",
+    "lower": -17.4495376963,
+    "upper": 19.444094676933332,
+    "n": 1377,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 3,
+    "season": "pre_monsoon",
+    "lower": -17.1023014626,
+    "upper": 21.169016613366665,
+    "n": 853,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 3,
+    "season": "monsoon",
+    "lower": -17.05425518,
+    "upper": 11.9020728418,
+    "n": 1649,
+    "source": "cell"
+  },
+  {
+    "output": "high_time",
+    "horizon": 3,
+    "season": "post_monsoon",
+    "lower": -17.6664827849,
+    "upper": 14.9420181085,
+    "n": 1214,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 1,
+    "season": "dry",
+    "lower": -0.1387331577580495,
+    "upper": 0.2711545242139879,
+    "n": 1696,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 1,
+    "season": "pre_monsoon",
+    "lower": -0.21535751357160215,
+    "upper": 0.28146339223740924,
+    "n": 1088,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 1,
+    "season": "monsoon",
+    "lower": -0.2271495221382489,
+    "upper": 0.3296361629126441,
+    "n": 2121,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 1,
+    "season": "post_monsoon",
+    "lower": -0.15544732482804946,
+    "upper": 0.28275971486996365,
+    "n": 1568,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 2,
+    "season": "dry",
+    "lower": -0.13032511082203602,
+    "upper": 0.27358962193520675,
+    "n": 1394,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 2,
+    "season": "pre_monsoon",
+    "lower": -0.2034588501335035,
+    "upper": 0.29349659757132773,
+    "n": 942,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 2,
+    "season": "monsoon",
+    "lower": -0.21851371161766675,
+    "upper": 0.3453201488334905,
+    "n": 2013,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 2,
+    "season": "post_monsoon",
+    "lower": -0.13465163801672997,
+    "upper": 0.29308531272662464,
+    "n": 1544,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 3,
+    "season": "dry",
+    "lower": -0.13227621862703387,
+    "upper": 0.2806226031800465,
+    "n": 1377,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 3,
+    "season": "pre_monsoon",
+    "lower": -0.229095314189661,
+    "upper": 0.31642665031826844,
+    "n": 853,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 3,
+    "season": "monsoon",
+    "lower": -0.16424436133472486,
+    "upper": 0.357723890629396,
+    "n": 1649,
+    "source": "cell"
+  },
+  {
+    "output": "high_height",
+    "horizon": 3,
+    "season": "post_monsoon",
+    "lower": -0.11831844912000822,
+    "upper": 0.31642257293537046,
+    "n": 1214,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 1,
+    "season": "dry",
+    "lower": -18.957673981533333,
+    "upper": 14.7920661469,
+    "n": 1698,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 1,
+    "season": "pre_monsoon",
+    "lower": -19.8421228755,
+    "upper": 19.2786541818,
+    "n": 1087,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 1,
+    "season": "monsoon",
+    "lower": -20.6573405166,
+    "upper": 16.4993169632,
+    "n": 2123,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 1,
+    "season": "post_monsoon",
+    "lower": -16.497664055666668,
+    "upper": 15.6534818217,
+    "n": 1569,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 2,
+    "season": "dry",
+    "lower": -19.2339985384,
+    "upper": 14.588431808866666,
+    "n": 1395,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 2,
+    "season": "pre_monsoon",
+    "lower": -20.2364300793,
+    "upper": 18.504562973133332,
+    "n": 940,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 2,
+    "season": "monsoon",
+    "lower": -21.155865660583334,
+    "upper": 16.8088150118,
+    "n": 2020,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 2,
+    "season": "post_monsoon",
+    "lower": -17.479801649866666,
+    "upper": 17.949200346766666,
+    "n": 1548,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 3,
+    "season": "dry",
+    "lower": -18.9865132148,
+    "upper": 16.632843518,
+    "n": 1376,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 3,
+    "season": "pre_monsoon",
+    "lower": -21.923132167833334,
+    "upper": 19.1625895914,
+    "n": 852,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 3,
+    "season": "monsoon",
+    "lower": -21.416686237933334,
+    "upper": 15.1537412865,
+    "n": 1651,
+    "source": "cell"
+  },
+  {
+    "output": "low_time",
+    "horizon": 3,
+    "season": "post_monsoon",
+    "lower": -17.5138689191,
+    "upper": 14.8426294775,
+    "n": 1213,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 1,
+    "season": "dry",
+    "lower": -0.1890402794451762,
+    "upper": 0.2668618396042768,
+    "n": 1698,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 1,
+    "season": "pre_monsoon",
+    "lower": -0.23646660417984477,
+    "upper": 0.2454734059457624,
+    "n": 1087,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 1,
+    "season": "monsoon",
+    "lower": -0.25043249726240013,
+    "upper": 0.3169293353989988,
+    "n": 2123,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 1,
+    "season": "post_monsoon",
+    "lower": -0.22885046439779066,
+    "upper": 0.27339903525124765,
+    "n": 1569,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 2,
+    "season": "dry",
+    "lower": -0.19308403332931423,
+    "upper": 0.2703181336644711,
+    "n": 1395,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 2,
+    "season": "pre_monsoon",
+    "lower": -0.24446721542102345,
+    "upper": 0.24293146594510273,
+    "n": 940,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 2,
+    "season": "monsoon",
+    "lower": -0.23371581556277038,
+    "upper": 0.32538412291926,
+    "n": 2020,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 2,
+    "season": "post_monsoon",
+    "lower": -0.21230230172953046,
+    "upper": 0.2613159417621991,
+    "n": 1548,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 3,
+    "season": "dry",
+    "lower": -0.18968594187672716,
+    "upper": 0.27621163708880814,
+    "n": 1376,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 3,
+    "season": "pre_monsoon",
+    "lower": -0.23971375444493803,
+    "upper": 0.23828756323101108,
+    "n": 852,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 3,
+    "season": "monsoon",
+    "lower": -0.22296543897680166,
+    "upper": 0.3454903384868344,
+    "n": 1651,
+    "source": "cell"
+  },
+  {
+    "output": "low_height",
+    "horizon": 3,
+    "season": "post_monsoon",
+    "lower": -0.20677579907339916,
+    "upper": 0.28325664192294076,
+    "n": 1213,
+    "source": "cell"
+  }
+]

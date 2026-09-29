@@ -35,7 +35,8 @@ class TableColumn:
 
 
 TABLE_COLUMNS = (
-    TableColumn((234.0, 247.0), (252.0, 270.0), (271.0, 287.0)),
+    # September's two-digit days start at x=233.28; include the leading digit.
+    TableColumn((232.0, 247.0), (252.0, 270.0), (271.0, 287.0)),
     TableColumn((294.0, 309.0), (313.0, 331.0), (332.0, 348.0)),
 )
 

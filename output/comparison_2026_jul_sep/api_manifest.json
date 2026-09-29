@@ -1,0 +1,802 @@
+{
+  "fetched_at_utc": "2026-09-27T07:49:49.506793+00:00",
+  "port_ids": {
+    "haldia": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+    "diamond_harbour": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba"
+  },
+  "requests": [
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-06-30",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-06-30-7.json",
+      "sha256": "7f234f904b0086982b4c44faab7be2bf122bfe5ef5cdbb7a96b30fadebc365d8",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-07",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-07-07-7.json",
+      "sha256": "27aef9b7d28ae5f3217a1b6fcc99f2a9d1ee024e4a484872a52d43a5d42d2c37",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-14",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-07-14-7.json",
+      "sha256": "8def1ad090297ffcbce1ee4735f25b02d69942627b8664482fa3d90028eafeea",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-21",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-07-21-7.json",
+      "sha256": "c2ccc71092f93f9889a83d61c457914047aacca7b706f6dc2c0d0b3af1eb4dee",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-06-30",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-06-30-7.json",
+      "sha256": "23a8effd01d5d164e4204bbd5289994f3f219407fb3e0f1238459681d008a2c9",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-07",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-07-07-7.json",
+      "sha256": "122966a114e511d2ef5835ffcf7f17386443ac9f0b2c1a3cc4b56a30cce27483",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-14",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-07-14-7.json",
+      "sha256": "5e0fb29892ef5c92ad0c46061ab4e050dc152b29f062867d42d557a2a0b228f2",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-28",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-07-28-7.json",
+      "sha256": "f0702e3f9d52290f5f9eae522977c9a8ec75f23db52cd6dc2820f343259f5472",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-21",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-07-21-7.json",
+      "sha256": "48d26d5d445c9437841f3a8d22dd17e2805e5668df374fb89ac90529641213ef",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-04",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-08-04-7.json",
+      "sha256": "44d9f4b83b594061de6519215eeabc0379c5c2c86b2acc7af293677f89d1231f",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-11",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-08-11-7.json",
+      "sha256": "ace54d4fe04b53a14da927120274ca6549552f692129d6add7e136b8dca46a8a",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-18",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-08-18-7.json",
+      "sha256": "850e3338f31567b8dfd55a18529f5c1818300da4aa53d85716d7400688865489",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-04",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-08-04-7.json",
+      "sha256": "a2685436b2c044cd38a6548eed66111b1397a48a6dae0b78d0b084b0a935c99a",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-11",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-08-11-7.json",
+      "sha256": "707ea0977e2e235ae51d00e3a56457c5e2cb8f1de74e2c46eadced6ce0dad87b",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-25",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-08-25-7.json",
+      "sha256": "48afe797624ed488e48300f0288bcc6790e4bebb3ce98b12335e7e71e0184e98",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-01",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-09-01-7.json",
+      "sha256": "679c9d94ef3fc3b4cb570be0d88bb559e26728a2afec0b683361250c587bf341",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-07-28",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-07-28-7.json",
+      "sha256": "e11b2f5525615b6d05d1e9487be20a2f1007db1f615a823f7c6f65ff2b37697b",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-08",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-09-08-7.json",
+      "sha256": "bad1374c52ea08d7d03f0f37126c2689b04f0a8dde334bda76963624106fe6c8",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-25",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-08-25-7.json",
+      "sha256": "f36dcb337784324500ac90cfd31aa6458f0711d370365f4f088ec3d91b6549a4",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-08-18",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-08-18-7.json",
+      "sha256": "73067393b94d8180a40d63add03ea737561b5613f2e9827f4d80beca057b54d6",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-15",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-09-15-7.json",
+      "sha256": "876eceed51a64bf48ad15df311b8c15993c5b9449bf16c8443a9ba30f6525f64",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-01",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-09-01-7.json",
+      "sha256": "1c7796c350e29ef1ecbbe9e7fa13e4887f7ad5fcab6db0e2effeb61821028760",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-22",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 28,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-09-22-7.json",
+      "sha256": "af93db4fc4078d632634626dff1f37c5722cccb8eabd895cb55ef91243bad82f",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-29",
+        "days": 3
+      },
+      "port": "haldia",
+      "rows": 11,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-haldia-2026-09-29-3.json",
+      "sha256": "4ae92ab2aedebc0cd6862a016468c8bd2e55dba0aa55fe5a01ec1be3d29256db",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-15",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-09-15-7.json",
+      "sha256": "1c5645def3d2a7009c231b6feb48b06713921f47cda01ca5cad092f3540e716a",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-06-30",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-06-30-7.json",
+      "sha256": "13ace56ce007034aac25b0990034089dbf33180118293d0fab9fe6351afa3b95",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-22",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-09-22-7.json",
+      "sha256": "0937b377bd9869062e48b0c25fc535e54e9754e3d5c52531d0b458668e28976c",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-08",
+        "days": 7
+      },
+      "port": "haldia",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-09-08-7.json",
+      "sha256": "d3d50f391b7c05381b2a9f220d79ddfbac8af395cceafeaa1486b8117190ca55",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "ef43eb28-8fe3-400d-a837-6d5a69e5ab59",
+        "start_date": "2026-09-29",
+        "days": 3
+      },
+      "port": "haldia",
+      "rows": 4320,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-haldia-2026-09-29-3.json",
+      "sha256": "11df956d977062616d64362580db205546a3a79dad6ebc3924fbff07e90e369d",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-07",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-07-07-7.json",
+      "sha256": "33e758bb9bdeb6f53a2984be59e722f0bf8a548fc633f0543cebb37ff59923b3",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-14",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-07-14-7.json",
+      "sha256": "16779880f855be4f81ecc2ca98ed4ad8955ebed216f671f22a25a45680470cb2",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-21",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-07-21-7.json",
+      "sha256": "c598e7dc51a2e054e31371c30cd43ded0385387d2aab63b7512027ef3e0ceb92",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-07",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-07-07-7.json",
+      "sha256": "155457b764d133afd9eba559301a500a670a27cfd2413f107f1fc8195e5b4234",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-28",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-07-28-7.json",
+      "sha256": "75634b40ad02135aa64bd5476940fb654c9e18c400cb07ddd21a9d170a8359db",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-14",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-07-14-7.json",
+      "sha256": "8489189ec7cc29e3663a66366ad48d177de830aa1848f27f67eb27edb0e15852",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-21",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-07-21-7.json",
+      "sha256": "d10c95020dfb106cbe7502d37d48f3519ca618fd1a949b6aea561dff9d424503",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-04",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-08-04-7.json",
+      "sha256": "bbeaaf03d1cea1405d077635ede32ed39c1a220ce9e754b5f65d137c72cb2040",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-11",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-08-11-7.json",
+      "sha256": "70c8d52fa75d165f8660b57a7eeb558353c87109e9031aae1b35ca5f8c4bba52",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-06-30",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-06-30-7.json",
+      "sha256": "ce9692e1dba416d22931425589ca846f43ff997ba359cc3a9b5545ec3ba8d3e2",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-18",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-08-18-7.json",
+      "sha256": "cd6224fa5b847843eb205cadcddc148f9163995235058383ff45a7b81f13163f",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-04",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-08-04-7.json",
+      "sha256": "3ad881096390d35080b02aa84c736a6cee25fea80605fb712f4cccf33b37d2ee",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-25",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-08-25-7.json",
+      "sha256": "dadbc2008c2496ce5cda1d3eb2285f4370c0d67a539b24f080407494762ad1c8",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-11",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-08-11-7.json",
+      "sha256": "8758960b8ade04d0562a8ebdfa19ee80bfde5d8d7660ed2ad829a8b99022168f",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-18",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-08-18-7.json",
+      "sha256": "21f422509a1c72f89712862c5614a8e5fde26597c239ef2425385146251ee69b",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-01",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-09-01-7.json",
+      "sha256": "ffa5e347306aa4eb755054400eba586d073b39062a71d3fb0e09370690217c0a",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-08",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-09-08-7.json",
+      "sha256": "1fa54fbfd567ad070840ab6fed28fe580b3e78b17e94bbdf664fa2ef4d4c3227",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-08-25",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-08-25-7.json",
+      "sha256": "f63280e2f720732ee5735e598f7f351d8c7625807a1a06ba59da269eea363d08",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-15",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 27,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-09-15-7.json",
+      "sha256": "81adb702bdc1b0a23382ae5fe705b86422e7f0cca915e63ba8fd87b0b842da74",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-08",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-09-08-7.json",
+      "sha256": "4d1daee17fdd9f73143a8cbf5fc493d89d44c847b2b6dd80fd0ce4c5fd404961",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-07-28",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-07-28-7.json",
+      "sha256": "b772f0423b6bbc1c001b5d4eb5aa77cf33258cedb8b4b8233188b49f3fbd597d",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-22",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 28,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-09-22-7.json",
+      "sha256": "bf0553771ee18c1be6b1633feb21b64b98768e770822b79e703b8c004bb50f55",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-tide-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-29",
+        "days": 3
+      },
+      "port": "diamond_harbour",
+      "rows": 11,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-tide-data-diamond_harbour-2026-09-29-3.json",
+      "sha256": "a2978d58307ee293c37aa2cb3c22663b624078c9276e06384cf2098f066ef71c",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-15",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-09-15-7.json",
+      "sha256": "bb812fef7f283aa82a114dcfaa19dfad95a304f15e7193a950d8756fc4f88891",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-01",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-09-01-7.json",
+      "sha256": "227db583e9b4463f79fe1161dcc7d8ece4959f79ca42fa9f24997f3a41e1e753",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-29",
+        "days": 3
+      },
+      "port": "diamond_harbour",
+      "rows": 4320,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-09-29-3.json",
+      "sha256": "d3b594aadd65d921cb64c08c37935c4023aeb57e39cc873b74134dc679df11b8",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    },
+    {
+      "url": "http://117.250.29.124:5008/api/tide/predicted-one-minute-data",
+      "request": {
+        "port_id": "6fdb84c4-1459-4f5a-960e-a5c50acfdeba",
+        "start_date": "2026-09-22",
+        "days": 7
+      },
+      "port": "diamond_harbour",
+      "rows": 10080,
+      "raw_file": "output\\comparison_2026_jul_sep\\api_raw\\predicted-one-minute-data-diamond_harbour-2026-09-22-7.json",
+      "sha256": "f1e3e7dbda193aa3c9029e43bde8adc2a493f13244386df5dc0c6490329ac884",
+      "http_status": 200,
+      "reused_current_run_cache": false
+    }
+  ],
+  "failures": [],
+  "port_list_sha256": "9fa86b38c33eb8110f0669c80d0e0885cae11d6ce493b2e309d5730f9409fbb1",
+  "period_ist": [
+    "2026-07-01 00:00:00",
+    "2026-10-01 00:00:00"
+  ],
+  "end_exclusive": true,
+  "events_duplicate_rows": 0,
+  "minute_duplicate_rows": 0
+}

@@ -1,0 +1,64 @@
+{
+  "DIAMOND HARBOUR": {
+    "fit_month": "2026-07",
+    "test_month": "2026-08",
+    "per_state": {
+      "High": {
+        "time_offset_min": -0.3,
+        "height_offset_m": -0.083,
+        "height_scale_a": 0.9752,
+        "height_intercept_b": 0.054
+      },
+      "Low": {
+        "time_offset_min": 12.3,
+        "height_offset_m": -0.095,
+        "height_scale_a": 0.8746,
+        "height_intercept_b": 0.122
+      }
+    },
+    "august_time_rmse_min": {
+      "raw": 17.786,
+      "offset": 15.824
+    },
+    "august_height_rmse_m": {
+      "raw": 0.147,
+      "offset": 0.123,
+      "linear": 0.102
+    },
+    "august_joint_pct": {
+      "raw": 91.7,
+      "corrected": 93.3
+    }
+  },
+  "HALDIA": {
+    "fit_month": "2026-07",
+    "test_month": "2026-08",
+    "per_state": {
+      "High": {
+        "time_offset_min": 14.1,
+        "height_offset_m": -0.136,
+        "height_scale_a": 0.9762,
+        "height_intercept_b": -0.007
+      },
+      "Low": {
+        "time_offset_min": 18.4,
+        "height_offset_m": -0.128,
+        "height_scale_a": 0.8861,
+        "height_intercept_b": 0.066
+      }
+    },
+    "august_time_rmse_min": {
+      "raw": 18.433,
+      "offset": 12.197
+    },
+    "august_height_rmse_m": {
+      "raw": 0.154,
+      "offset": 0.097,
+      "linear": 0.081
+    },
+    "august_joint_pct": {
+      "raw": 91.6,
+      "corrected": 95.8
+    }
+  }
+}
