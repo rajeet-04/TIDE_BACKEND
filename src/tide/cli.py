@@ -28,9 +28,10 @@ def build_parser() -> argparse.ArgumentParser:
     api.add_argument("--from-json", type=Path, help="a saved API response (list of rows) instead of a live request")
     api.set_defaults(handler=_tables_api)
 
-    choose = _port(commands.add_parser("select", help="choose model A settings on the selection folds, then score the final folds"))
+    choose = _port(commands.add_parser("select", help="choose model A's settings and model B's corrections on the "
+                                                      "selection folds, then score the final folds"))
     choose.add_argument("--jobs", type=int, default=4)
-    choose.add_argument("--skip-grid", action="store_true", help="reuse models/<port>/selected.json")
+    choose.add_argument("--skip-grid", action="store_true", help="reuse model A's settings from models/<port>/selected.json")
     choose.set_defaults(handler=_select)
 
     fit = _port(commands.add_parser("fit", help="fit the selected model A on all QC-passed readings and save a version"))
@@ -110,9 +111,14 @@ def _select(args: argparse.Namespace) -> None:
 
     from tide.harmonic import HarmonicConfig
     from tide.report import final_report, select, selected_path
+    from tide.selection import select_b
 
-    config = (HarmonicConfig.from_name(json.loads(selected_path(args.port).read_text())["candidate"])
-              if args.skip_grid else select(args.port, args.jobs))
+    if args.skip_grid:
+        saved = json.loads(selected_path(args.port).read_text())
+        a = HarmonicConfig.from_name(saved.get("a_candidate", saved["candidate"]))
+    else:
+        a = select(args.port, args.jobs)
+    config = select_b(args.port, a, args.jobs)
     result = final_report(args.port, config, args.jobs)
     print(json.dumps({"candidate": config.name, **result["promotion"]["checks"],
                       "passed": result["promotion"]["passed"]}, indent=2))
