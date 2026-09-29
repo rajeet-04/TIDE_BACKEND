@@ -207,6 +207,7 @@ def _covered(coverage: pd.DataFrame | None, horizon) -> bool:
         return False
     part = coverage[coverage["horizon"] == horizon]
     return len(part) > 0 and bool(part["covered_pct"].between(*COVERAGE_BAND).all())
+
 def score_fixed(port_slug: str, predicted: pd.DataFrame) -> pd.DataFrame:
     """Event rows for predictions made outside the backtest (the official tables), scored on
     every IST year they share with the QC-passed gauge, within the span they cover."""
