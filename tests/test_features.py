@@ -49,3 +49,13 @@ def test_features_use_only_times_and_model_a():
         assert set(inspect.signature(function).parameters) <= allowed, function.__name__
     source = inspect.getsource(features)
     assert "tide.store" not in source and "load_gauge" not in source and "read_gauge_csv" not in source
+
+def test_no_feature_follows_a_cycle_longer_than_a_year():
+    """The lunar node (18.6 y) and perigee (8.85 y) cycles let learners tell years apart and replay
+    one year's weather-driven level anomaly onto a later year in the same phase (plan 1b, Task 11).
+    Model A's nodal corrections already carry their tidal effect."""
+    assert not [c for c in features.ASTRONOMICAL if c.startswith(("node", "perigee"))]
+    # the Moon's declination at the same point of its orbit must not drift with the node
+    frame = astronomical(pd.date_range("2000-01-01", "2020-01-01", freq="1D", tz="UTC"))
+    peaks = frame["moon_declination"].rolling(28).max().iloc[28:]
+    assert peaks.max() - peaks.min() < np.radians(1.0)

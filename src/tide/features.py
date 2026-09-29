@@ -14,14 +14,12 @@ from tide.harmonic import datenum
 from tide.ports import IST
 
 OBLIQUITY = np.radians(23.44)
-LUNAR_INCLINATION = np.radians(5.145)
 MOON_ECCENTRICITY = 0.0549
 EARTH_ECCENTRICITY = 0.0167
 CLIP_HOURS = 30.0
 MARGIN = pd.Timedelta(hours=40)
 ASTRONOMICAL = ["moon_phase_sin", "moon_phase_cos", "spring_neap_sin", "spring_neap_cos", "moon_declination",
-                "moon_distance", "sun_declination", "sun_distance", "node_sin", "node_cos", "perigee_sin",
-                "perigee_cos", "day_sin", "day_cos", "hour_sin", "hour_cos"]
+                "moon_distance", "sun_declination", "sun_distance", "day_sin", "day_cos", "hour_sin", "hour_cos"]
 SHAPE = ["level", "slope", "curvature", "since_high", "until_high", "since_low", "until_low", "tide_range",
          "stage_sin", "stage_cos"]
 CONTEXT = ["is_high", "height", "prev_height", "next_height", "prev_range", "next_range", "prev_interval",
@@ -31,11 +29,11 @@ EVENT_FEATURES = CONTEXT + ASTRONOMICAL
 
 def astronomical(times) -> pd.DataFrame:
     """Moon and sun state from UTide's mean longitudes: lunar phase and its spring/neap
-    harmonic, approximate declinations and distances, the lunar node and perigee cycles,
-    and the day of year and hour of day in IST."""
+    harmonic, approximate declinations and distances, and the day of year and hour of day in IST.
+    Nothing on a cycle longer than a year: those let learners tell years apart (see the tests)."""
     times = pd.DatetimeIndex(times)
     astro, _ = ut_astron(datenum(times))
-    s, h, perigee, node, perihelion = astro[1], astro[2], astro[3], astro[4], astro[5]  # cycles
+    s, h, perigee, perihelion = astro[1], astro[2], astro[3], astro[5]  # cycles
     turn = 2 * np.pi
     phase = turn * (s - h)
     ist = times.tz_convert(IST)
@@ -44,12 +42,10 @@ def astronomical(times) -> pd.DataFrame:
     return pd.DataFrame({
         "moon_phase_sin": np.sin(phase), "moon_phase_cos": np.cos(phase),
         "spring_neap_sin": np.sin(2 * phase), "spring_neap_cos": np.cos(2 * phase),
-        "moon_declination": np.arcsin(np.sin(OBLIQUITY + LUNAR_INCLINATION * np.cos(turn * node)) * np.sin(turn * s)),
+        "moon_declination": np.arcsin(np.sin(OBLIQUITY) * np.sin(turn * s)),   # on the ecliptic: no 18.6-year drift
         "moon_distance": 1 - MOON_ECCENTRICITY * np.cos(turn * (s - perigee)),
         "sun_declination": np.arcsin(np.sin(OBLIQUITY) * np.sin(turn * h)),
         "sun_distance": 1 - EARTH_ECCENTRICITY * np.cos(turn * (h - perihelion)),
-        "node_sin": np.sin(turn * node), "node_cos": np.cos(turn * node),
-        "perigee_sin": np.sin(turn * perigee), "perigee_cos": np.cos(turn * perigee),
         "day_sin": np.sin(turn * day), "day_cos": np.cos(turn * day),
         "hour_sin": np.sin(turn * hour / 24.0), "hour_cos": np.cos(turn * hour / 24.0),
     })
