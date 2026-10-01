@@ -13,6 +13,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import ssl
 import sys
 import time
 import urllib.request
@@ -27,6 +28,13 @@ TIME_FORMAT = "%Y-%m-%d %H:%M"
 GAP_TOLERANCE = timedelta(minutes=5)
 EPOCH = datetime(1970, 1, 1)
 STATION_FIELDS = ["code", "name", "json_name", "latitude", "longitude", "status", "last_report", "owner"]
+
+
+def tls_context() -> ssl.SSLContext:
+    """Complete INCOIS's missing intermediate chain without disabling TLS verification."""
+    context = ssl.create_default_context()
+    context.load_verify_locations(cafile=str(Path(__file__).with_name("certs") / "globalsign-rsa-ov-ssl-ca-2018.pem"))
+    return context
 
 
 def decode_time(ms: int) -> datetime:
@@ -91,9 +99,10 @@ def parse_stations(xml_text: str | bytes) -> list[dict]:
 
 
 def fetch(url: str, retries: int = 3) -> bytes:
+    context = tls_context()
     for attempt in range(retries):
         try:
-            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=60) as r:
+            with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": USER_AGENT}), timeout=60, context=context) as r:
                 return r.read()
         except OSError:  # URLError, HTTPError and timeouts
             if attempt == retries - 1:

@@ -1,6 +1,8 @@
 """Checks for src/archive_incois.py. Run: python tests/test_archive_incois.py (pytest also works)."""
 import sys
+import ssl
 import tempfile
+from unittest.mock import MagicMock, patch
 from datetime import datetime
 from pathlib import Path
 
@@ -8,6 +10,27 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 import archive_incois as ai
 
 MS_2026_09_26_0827 = -58167819180000  # first sample of the captured GARDENREACH_1.json
+
+
+def test_tls_context_keeps_verification_and_loads_missing_intermediate():
+    context = ai.tls_context()
+    assert context.check_hostname
+    assert context.verify_mode == ssl.CERT_REQUIRED
+    assert any(
+        ("commonName", "GlobalSign RSA OV SSL CA 2018") in group
+        for cert in context.get_ca_certs() for group in cert["subject"]
+    )
+
+
+def test_fetch_uses_verified_context_and_retries_network_errors():
+    response = MagicMock()
+    response.__enter__.return_value.read.return_value = b"readings"
+    with patch.object(ai.urllib.request, "urlopen", side_effect=[OSError("temporary"), response]) as urlopen, patch.object(ai.time, "sleep") as sleep:
+        assert ai.fetch(f"{ai.BASE}/homexmls/TideStations.xml") == b"readings"
+        assert urlopen.call_count == 2
+        sleep.assert_called_once_with(10)
+        context = urlopen.call_args.kwargs["context"]
+        assert context.check_hostname and context.verify_mode == ssl.CERT_REQUIRED
 
 
 def test_decode_time_fixes_incois_year_offset():
