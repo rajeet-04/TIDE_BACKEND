@@ -1,39 +1,40 @@
 code,name,json_name,latitude,longitude,status,last_report,owner
-adan,Adani,ADANI,21.1,72.616,Reporting,2026-Oct-07 10:07,INCOIS
-aeri,Aerialbay,AERIALBAY,13.2833,93.0333,Reporting,2026-Oct-07 10:09,INCOIS
-agatt,Agatti,AGATTI,10.8184,72.1726,Reporting,2026-Oct-07 10:07,INCOIS
-astra,Astranga,ASTRANGA,19.9743,86.339,Reporting,2026-Oct-07 03:42,INCOIS
-bahab,Bahabalpur,BAHABALPUR,20.793,86.9006,Reporting,2026-Oct-07 10:07,INCOIS
-beyp,Beypore,BEYPORE,11.171,75.808,Reporting,2026-Oct-07 10:06,INCOIS
-chenn,Chennai,CHENNAI,13.1,80.3,Reporting,2026-Oct-07 10:06,INCOIS
-coch,Cochin,COCHIN,9.9667,76.2667,Reporting,2026-Oct-07 10:08,INCOIS
-daman,Daman,DAMAN,20.4111,72.834,Reporting,2026-Oct-07 10:07,INCOIS
-dosin,Dosinga,DOSINGA,20.8174,86.9681,Reporting,2026-Oct-07 10:07,INCOIS
-enno,Ennore,ENNORE,13.25,80.3333,Reporting,2026-Oct-07 10:06,INCOIS
-gard,Gardenreach,GARDENREACH,22.55,88.3,Reporting,2026-Oct-07 10:07,INCOIS
-jakh,Jakhau,JAKHAU,23.243,68.606,Reporting,2026-Oct-07 06:56,INCOIS
-jnpt,Jnpt,JNPT,18.9167,72.75,Reporting,2026-Oct-07 10:07,INCOIS
-kaki,Kakinada,KAKINADA,16.9333,82.25,Reporting,2026-Oct-07 05:35,INCOIS
-kalpe,Kalpeni,KALPENI,10.0884,73.6467,Reporting,2026-Oct-07 15:37,INCOIS
-kand,Kandla,KANDLA,23.017,70.217,Reporting,2026-Oct-07 08:50,INCOIS
-kanya,Kanyakumari,KANYAKUMARI,8.0952,77.5645,Reporting,2026-Oct-07 10:07,INCOIS
-karw,Karwar,KARWAR,14.8,74.1167,Reporting,2026-Oct-07 10:07,INCOIS
-kris,Krishnapatnam,KRISHNAPATNAM,14.25,80.1333,Reporting,2026-Oct-07 10:06,INCOIS
-marm,Marmagoa,MARMAGOA,15.409,73.8,Reporting,2026-Oct-07 10:07,INCOIS
-mayab,Mayabunder,MAYABUNDER,12.9265,92.8975,Reporting,2026-Oct-07 10:07,INCOIS
-mumba,Mumbai,MUMBAI,18.9415,72.8527,Reporting,2026-Oct-07 10:07,INCOIS
-murud,Murud,MURUD,18.2837,72.9823,Reporting,2026-Oct-07 10:07,INCOIS
-naga,Nagapattinam,NAGAPATTINAM,10.7667,79.85,Reporting,2026-Oct-07 10:09,INCOIS
-newm,Newmangalore,NEWMANGALORE,12.9167,74.8,Reporting,2026-Oct-07 09:51,INCOIS
-okha,Okha,OKHA,22.4667,69.0833,Reporting,2026-Oct-07 10:09,INCOIS
-panaj,Panaji,PANAJI,15.5016,73.8282,Reporting,2026-Oct-07 10:07,INCOIS
-para,Paradeep,PARADEEP,20.2667,86.7,Reporting,2026-Oct-07 10:07,INCOIS
-porb,Porbander,PORBANDER,21.6333,69.6167,Reporting,2026-Oct-07 10:06,INCOIS
-ptbl,Portblair,PORTBLAIR,11.6833,92.7667,Reporting,2026-Oct-07 10:09,INCOIS
-ramaya,Ramayapatnam,RAMAYAPATNAM,15.0158,80.0603,Reporting,2026-Oct-07 10:07,INCOIS
-rames,Rameshwaram,RAMESHWARAM,9.2578,79.2257,Reporting,2026-Oct-07 10:07,INCOIS
-tuti,Tuticorin,TUTICORIN,8.75,78.2,Reporting,2026-Oct-07 10:07,INCOIS
-vish,Visakhapatnam,VISAKHAPATNAM,17.6833,83.2833,Reporting,2026-Oct-07 06:17,INCOIS
+adan,Adani,ADANI,21.1,72.616,Reporting,2026-Oct-07 18:27,INCOIS
+aeri,Aerialbay,AERIALBAY,13.2833,93.0333,Reporting,2026-Oct-07 20:36,INCOIS
+agatt,Agatti,AGATTI,10.8184,72.1726,Reporting,2026-Oct-07 18:27,INCOIS
+astra,Astranga,ASTRANGA,19.9743,86.339,Reporting,2026-Oct-07 18:27,INCOIS
+bahab,Bahabalpur,BAHABALPUR,20.793,86.9006,Reporting,2026-Oct-07 18:27,INCOIS
+beyp,Beypore,BEYPORE,11.171,75.808,Reporting,2026-Oct-07 20:27,INCOIS
+chenn,Chennai,CHENNAI,13.1,80.3,Reporting,2026-Oct-07 20:33,INCOIS
+coch,Cochin,COCHIN,9.9667,76.2667,Reporting,2026-Oct-07 20:35,INCOIS
+daman,Daman,DAMAN,20.4111,72.834,Reporting,2026-Oct-07 18:27,INCOIS
+dosin,Dosinga,DOSINGA,20.8174,86.9681,Reporting,2026-Oct-07 18:27,INCOIS
+enno,Ennore,ENNORE,13.25,80.3333,Reporting,2026-Oct-07 20:32,INCOIS
+gard,Gardenreach,GARDENREACH,22.55,88.3,Reporting,2026-Oct-07 20:34,INCOIS
+jakh,Jakhau,JAKHAU,23.243,68.606,Reporting,2026-Oct-07 16:11,INCOIS
+jnpt,Jnpt,JNPT,18.9167,72.75,Reporting,2026-Oct-07 20:34,INCOIS
+kaki,Kakinada,KAKINADA,16.9333,82.25,Reporting,2026-Oct-07 16:56,INCOIS
+kalpe,Kalpeni,KALPENI,10.0884,73.6467,Reporting,2026-Oct-07 19:29,INCOIS
+kand,Kandla,KANDLA,23.017,70.217,Reporting,2026-Oct-07 20:23,INCOIS
+kanya,Kanyakumari,KANYAKUMARI,8.0952,77.5645,Reporting,2026-Oct-07 18:27,INCOIS
+karw,Karwar,KARWAR,14.8,74.1167,Reporting,2026-Oct-07 20:34,INCOIS
+kava,Kavaratti,KAVARATTI,10.5667,72.6333,Reporting,2026-Oct-07 23:59,INCOIS
+kris,Krishnapatnam,KRISHNAPATNAM,14.25,80.1333,Reporting,2026-Oct-07 20:33,INCOIS
+marm,Marmagoa,MARMAGOA,15.409,73.8,Reporting,2026-Oct-07 18:27,INCOIS
+mayab,Mayabunder,MAYABUNDER,12.9265,92.8975,Reporting,2026-Oct-07 18:27,INCOIS
+mumba,Mumbai,MUMBAI,18.9415,72.8527,Reporting,2026-Oct-07 18:27,INCOIS
+murud,Murud,MURUD,18.2837,72.9823,Reporting,2026-Oct-07 18:27,INCOIS
+naga,Nagapattinam,NAGAPATTINAM,10.7667,79.85,Reporting,2026-Oct-07 11:37,INCOIS
+newm,Newmangalore,NEWMANGALORE,12.9167,74.8,Reporting,2026-Oct-07 14:57,INCOIS
+okha,Okha,OKHA,22.4667,69.0833,Reporting,2026-Oct-07 20:36,INCOIS
+panaj,Panaji,PANAJI,15.5016,73.8282,Reporting,2026-Oct-07 18:27,INCOIS
+para,Paradeep,PARADEEP,20.2667,86.7,Reporting,2026-Oct-07 20:34,INCOIS
+porb,Porbander,PORBANDER,21.6333,69.6167,Reporting,2026-Oct-07 18:25,INCOIS
+ptbl,Portblair,PORTBLAIR,11.6833,92.7667,Reporting,2026-Oct-07 20:33,INCOIS
+ramaya,Ramayapatnam,RAMAYAPATNAM,15.0158,80.0603,Reporting,2026-Oct-07 18:27,INCOIS
+rames,Rameshwaram,RAMESHWARAM,9.2578,79.2257,Reporting,2026-Oct-07 18:20,INCOIS
+tuti,Tuticorin,TUTICORIN,8.75,78.2,Reporting,2026-Oct-07 20:31,INCOIS
+vish,Visakhapatnam,VISAKHAPATNAM,17.6833,83.2833,Reporting,2026-Oct-07 16:41,INCOIS
 camp,Campbellbay,CAMPBELLBAY,7.0,93.9333,Not Reporting,Not Reporting,INCOIS
 carn,Carnicobar,CARNICOBAR,9.2344,92.7769,Not Reporting,Not Reporting,INCOIS
 chetl,Chetlat,CHETLAT,11.6939,72.717,Not Reporting,Not Reporting,INCOIS
@@ -41,7 +42,6 @@ dham,Dhamra,DHAMRA,20.7851,86.9556,Not Reporting,Not Reporting,INCOIS
 gopa,Gopalpur,GOPALPUR,19.2889,84.9483,Not Reporting,Not Reporting,INCOIS
 hutb,Hutbay,HUTBAY,10.5914,92.5625,Not Reporting,Not Reporting,INCOIS
 jaig,Jaigarh,JAIGARH,17.281,73.208,Not Reporting,Not Reporting,INCOIS
-kava,Kavaratti,KAVARATTI,10.5667,72.6333,Not Reporting,Not Reporting,INCOIS
 koll,Kollam,KOLLAM,8.864,76.603,Not Reporting,Not Reporting,INCOIS
 mach,Machilipatnam,MACHILIPATNAM,16.145,81.178,Not Reporting,Not Reporting,INCOIS
 mini,Minicoy,MINICOY,8.2833,73.05,Not Reporting,Not Reporting,INCOIS
