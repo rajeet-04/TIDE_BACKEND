@@ -1,51 +1,51 @@
 code,name,json_name,latitude,longitude,status,last_report,owner
-adan,Adani,ADANI,21.1,72.616,Reporting,2026-Nov-02 18:28,INCOIS
-aeri,Aerialbay,AERIALBAY,13.2833,93.0333,Reporting,2026-Nov-02 22:59,INCOIS
-agatt,Agatti,AGATTI,10.8184,72.1726,Reporting,2026-Nov-02 18:29,INCOIS
-bahab,Bahabalpur,BAHABALPUR,20.793,86.9006,Reporting,2026-Nov-02 18:29,INCOIS
-beyp,Beypore,BEYPORE,11.171,75.808,Reporting,2026-Nov-02 22:33,INCOIS
-camp,Campbellbay,CAMPBELLBAY,7.0,93.9333,Reporting,2026-Nov-02 10:28,INCOIS
-chenn,Chennai,CHENNAI,13.1,80.3,Reporting,2026-Nov-02 22:54,INCOIS
-coch,Cochin,COCHIN,9.9667,76.2667,Reporting,2026-Nov-02 22:56,INCOIS
-daman,Daman,DAMAN,20.4111,72.834,Reporting,2026-Nov-02 18:29,INCOIS
-enno,Ennore,ENNORE,13.25,80.3333,Reporting,2026-Nov-02 22:57,INCOIS
-gard,Gardenreach,GARDENREACH,22.55,88.3,Reporting,2026-Nov-02 22:58,INCOIS
-gopa,Gopalpur,GOPALPUR,19.2889,84.9483,Reporting,2026-Nov-02 18:28,INCOIS
-hutb,Hutbay,HUTBAY,10.5914,92.5625,Reporting,2026-Nov-02 18:29,INCOIS
-jaig,Jaigarh,JAIGARH,17.281,73.208,Reporting,2026-Nov-02 18:29,INCOIS
-jakh,Jakhau,JAKHAU,23.243,68.606,Reporting,2026-Nov-02 11:10,INCOIS
-jnpt,Jnpt,JNPT,18.9167,72.75,Reporting,2026-Nov-02 22:58,INCOIS
-kaki,Kakinada,KAKINADA,16.9333,82.25,Reporting,2026-Nov-02 22:44,INCOIS
-kalpe,Kalpeni,KALPENI,10.0884,73.6467,Reporting,2026-Nov-02 19:29,INCOIS
-kand,Kandla,KANDLA,23.017,70.217,Reporting,2026-Nov-02 22:41,INCOIS
-kanya,Kanyakumari,KANYAKUMARI,8.0952,77.5645,Reporting,2026-Nov-02 18:29,INCOIS
-karw,Karwar,KARWAR,14.8,74.1167,Reporting,2026-Nov-02 22:58,INCOIS
-kris,Krishnapatnam,KRISHNAPATNAM,14.25,80.1333,Reporting,2026-Nov-02 22:54,INCOIS
-marm,Marmagoa,MARMAGOA,15.409,73.8,Reporting,2026-Nov-02 18:28,INCOIS
-mayab,Mayabunder,MAYABUNDER,12.9265,92.8975,Reporting,2026-Nov-02 11:22,INCOIS
-newm,Newmangalore,NEWMANGALORE,12.9167,74.8,Reporting,2026-Nov-02 22:58,INCOIS
-okha,Okha,OKHA,22.4667,69.0833,Reporting,2026-Nov-02 22:59,INCOIS
-panaj,Panaji,PANAJI,15.5016,73.8282,Reporting,2026-Nov-02 18:29,INCOIS
-para,Paradeep,PARADEEP,20.2667,86.7,Reporting,2026-Nov-02 22:55,INCOIS
-porb,Porbander,PORBANDER,21.6333,69.6167,Reporting,2026-Nov-02 18:28,INCOIS
-ptbl,Portblair,PORTBLAIR,11.6833,92.7667,Reporting,2026-Nov-02 22:59,INCOIS
-pudu,Puducherry,PUDUCHERRY,11.93,79.835,Reporting,2026-Nov-02 18:28,INCOIS
-ramaya,Ramayapatnam,RAMAYAPATNAM,15.0158,80.0603,Reporting,2026-Nov-02 18:29,INCOIS
-rames,Rameshwaram,RAMESHWARAM,9.2578,79.2257,Reporting,2026-Nov-02 18:29,INCOIS
-rang,Rangatbay,RANGATBAY,12.4889,92.9569,Reporting,2026-Nov-02 18:29,INCOIS
-tuti,Tuticorin,TUTICORIN,8.75,78.2,Reporting,2026-Nov-02 22:58,INCOIS
-vish,Visakhapatnam,VISAKHAPATNAM,17.6833,83.2833,Reporting,2026-Nov-02 17:42,INCOIS
+adan,Adani,ADANI,21.1,72.616,Reporting,2026-Nov-03 10:40,INCOIS
+aeri,Aerialbay,AERIALBAY,13.2833,93.0333,Reporting,2026-Nov-03 10:44,INCOIS
+agatt,Agatti,AGATTI,10.8184,72.1726,Reporting,2026-Nov-03 10:40,INCOIS
+bahab,Bahabalpur,BAHABALPUR,20.793,86.9006,Reporting,2026-Nov-03 10:41,INCOIS
+beyp,Beypore,BEYPORE,11.171,75.808,Reporting,2026-Nov-03 10:42,INCOIS
+camp,Campbellbay,CAMPBELLBAY,7.0,93.9333,Reporting,2026-Nov-03 10:44,INCOIS
+chenn,Chennai,CHENNAI,13.1,80.3,Reporting,2026-Nov-03 10:42,INCOIS
+coch,Cochin,COCHIN,9.9667,76.2667,Reporting,2026-Nov-03 10:38,INCOIS
+daman,Daman,DAMAN,20.4111,72.834,Reporting,2026-Nov-03 10:41,INCOIS
+dosin,Dosinga,DOSINGA,20.8174,86.9681,Reporting,2026-Nov-03 10:41,INCOIS
+enno,Ennore,ENNORE,13.25,80.3333,Reporting,2026-Nov-03 10:42,INCOIS
+gard,Gardenreach,GARDENREACH,22.55,88.3,Reporting,2026-Nov-03 10:43,INCOIS
+gopa,Gopalpur,GOPALPUR,19.2889,84.9483,Reporting,2026-Nov-03 10:41,INCOIS
+hutb,Hutbay,HUTBAY,10.5914,92.5625,Reporting,2026-Nov-03 10:41,INCOIS
+jaig,Jaigarh,JAIGARH,17.281,73.208,Reporting,2026-Nov-03 10:41,INCOIS
+jakh,Jakhau,JAKHAU,23.243,68.606,Reporting,2026-Nov-03 09:06,INCOIS
+jnpt,Jnpt,JNPT,18.9167,72.75,Reporting,2026-Nov-03 10:43,INCOIS
+kaki,Kakinada,KAKINADA,16.9333,82.25,Reporting,2026-Nov-03 10:41,INCOIS
+kalpe,Kalpeni,KALPENI,10.0884,73.6467,Reporting,2026-Nov-03 16:10,INCOIS
+kand,Kandla,KANDLA,23.017,70.217,Reporting,2026-Nov-03 10:08,INCOIS
+kanya,Kanyakumari,KANYAKUMARI,8.0952,77.5645,Reporting,2026-Nov-03 10:41,INCOIS
+karw,Karwar,KARWAR,14.8,74.1167,Reporting,2026-Nov-03 10:37,INCOIS
+kris,Krishnapatnam,KRISHNAPATNAM,14.25,80.1333,Reporting,2026-Nov-03 10:42,INCOIS
+marm,Marmagoa,MARMAGOA,15.409,73.8,Reporting,2026-Nov-03 10:40,INCOIS
+mayab,Mayabunder,MAYABUNDER,12.9265,92.8975,Reporting,2026-Nov-02 23:58,INCOIS
+murud,Murud,MURUD,18.2837,72.9823,Reporting,2026-Nov-03 10:41,INCOIS
+newm,Newmangalore,NEWMANGALORE,12.9167,74.8,Reporting,2026-Nov-03 10:43,INCOIS
+okha,Okha,OKHA,22.4667,69.0833,Reporting,2026-Nov-03 10:44,INCOIS
+panaj,Panaji,PANAJI,15.5016,73.8282,Reporting,2026-Nov-03 10:41,INCOIS
+para,Paradeep,PARADEEP,20.2667,86.7,Reporting,2026-Nov-03 10:43,INCOIS
+porb,Porbander,PORBANDER,21.6333,69.6167,Reporting,2026-Nov-03 10:39,INCOIS
+ptbl,Portblair,PORTBLAIR,11.6833,92.7667,Reporting,2026-Nov-03 10:44,INCOIS
+pudu,Puducherry,PUDUCHERRY,11.93,79.835,Reporting,2026-Nov-03 10:41,INCOIS
+ramaya,Ramayapatnam,RAMAYAPATNAM,15.0158,80.0603,Reporting,2026-Nov-03 10:41,INCOIS
+rames,Rameshwaram,RAMESHWARAM,9.2578,79.2257,Reporting,2026-Nov-03 08:30,INCOIS
+rang,Rangatbay,RANGATBAY,12.4889,92.9569,Reporting,2026-Nov-03 10:41,INCOIS
+tuti,Tuticorin,TUTICORIN,8.75,78.2,Reporting,2026-Nov-03 10:43,INCOIS
+vish,Visakhapatnam,VISAKHAPATNAM,17.6833,83.2833,Reporting,2026-Nov-03 04:21,INCOIS
 astra,Astranga,ASTRANGA,19.9743,86.339,Not Reporting,Not Reporting,INCOIS
 carn,Carnicobar,CARNICOBAR,9.2344,92.7769,Not Reporting,Not Reporting,INCOIS
 chetl,Chetlat,CHETLAT,11.6939,72.717,Not Reporting,Not Reporting,INCOIS
 dham,Dhamra,DHAMRA,20.7851,86.9556,Not Reporting,Not Reporting,INCOIS
-dosin,Dosinga,DOSINGA,20.8174,86.9681,Not Reporting,Not Reporting,INCOIS
 kava,Kavaratti,KAVARATTI,10.5667,72.6333,Not Reporting,Not Reporting,INCOIS
 koll,Kollam,KOLLAM,8.864,76.603,Not Reporting,Not Reporting,INCOIS
 mach,Machilipatnam,MACHILIPATNAM,16.145,81.178,Not Reporting,Not Reporting,INCOIS
 mini,Minicoy,MINICOY,8.2833,73.05,Not Reporting,Not Reporting,INCOIS
 mumba,Mumbai,MUMBAI,18.9415,72.8527,Not Reporting,Not Reporting,INCOIS
-murud,Murud,MURUD,18.2837,72.9823,Not Reporting,Not Reporting,INCOIS
 naga,Nagapattinam,NAGAPATTINAM,10.7667,79.85,Not Reporting,Not Reporting,INCOIS
 nagc,Nancowry,NANCOWRY,8.05,93.55,Not Reporting,Not Reporting,INCOIS
 verav,Veraval,VERAVAL,20.912,70.408,Not Reporting,Not Reporting,INCOIS
